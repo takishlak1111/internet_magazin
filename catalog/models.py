@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator
 class Category(models.Model):
 
     name = models.CharField(max_length = 100, verbose_name = "Навзание категории")
-    slug = models.SlugField(max_length=100, unique=True, verbose_name='URL')
+    slug = models.SlugField(max_length=100, unique=True, verbose_name='URL', null = True, blank = True)
 
     def get_absolute_url(self):
         return reverse('catalog:category_detail', kwargs={'slug': self.slug})

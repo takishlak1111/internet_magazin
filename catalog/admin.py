@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Brand
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -15,11 +15,11 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
 
-    list_display = ('product_name', 'category', 'get_brand_name', 'price', 'stock', 'in_stock_display', 'get_average_rating', 'get_reviews_count', 'is_active', 'created_at')
-    list_filter = ('category', 'brand', 'is_active', 'created_at', 'price', 'get_average_rating')
+    list_display = ('product_name', 'category', 'get_brand_name', 'price', 'stock', 'in_stock_display', 'get_average_rating', 'get_reviews_count', 'created_at')
+    list_filter = ('category', 'brand', 'created_at', 'price')
     search_fields = ('product_name', 'description', 'slug', 'category_name', 'brand_name')
     prepopulated_fields = {'slug': ('product_name',)}
-    list_editable = ('price', 'stock', 'is_active')
+    list_editable = ('price', 'stock')
     readonly_fields = ('created_at', 'updated_at', 'get_average_rating', 'get_reviews_count')
 
     fieldsets = (
@@ -27,7 +27,7 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': ('product_name', 'slug', 'description', 'category', 'brand')
         }),
         ('Цена и наличие', {
-            'fields': ('price', 'stock', 'is_active')
+            'fields': ('price', 'stock')
         }),
         ('Статистика', {
             'fields': ('get_average_rating', 'get_reviews_count')
