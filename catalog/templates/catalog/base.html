@@ -1,0 +1,503 @@
+<!-- catalog/templates/catalog/base.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechShop - Магазин электроники{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f94144;
+            --border-radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 28px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+            background: var(--light-gray);
+        }
+
+        .nav a.active {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 40px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 0;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 20px;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main Content */
+        .main-container {
+            flex: 1;
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 14px;
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            background: white;
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .breadcrumbs a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .breadcrumbs span {
+            color: var(--gray);
+        }
+
+        /* Messages */
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 15px;
+            }
+            
+            .search-container {
+                order: 3;
+                max-width: 100%;
+                margin: 15px 0 0;
+            }
+            
+            .nav {
+                gap: 10px;
+            }
+            
+            .main-container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="{% url 'catalog:product_list' %}" class="logo">
+                <i class="fas fa-store"></i>
+                <span>TechShop</span>
+            </a>
+
+            <nav class="nav">
+                <a href="{% url 'catalog:product_list' %}" class="{% if request.resolver_match.url_name == 'product_list' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Главная
+                </a>
+                <a href="#">
+                    <i class="fas fa-fire"></i> Акции
+                </a>
+                <a href="#">
+                    <i class="fas fa-shipping-fast"></i> Доставка
+                </a>
+            </nav>
+
+            <div class="search-container">
+                <form method="get" action="{% url 'catalog:product_search' %}" class="search-form">
+                    <input type="text" name="q" placeholder="Поиск товаров..." class="search-input" value="{{ request.GET.q|default:'' }}">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="user-actions">
+                <button class="action-btn" title="Избранное">
+                    <i class="far fa-heart"></i>
+                </button>
+                <button class="action-btn" title="Корзина">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="action-btn" title="Профиль">
+                    <i class="far fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="main-container">
+        {% block breadcrumbs %}
+        <div class="breadcrumbs">
+            <a href="{% url 'catalog:product_list' %}">Главная</a>
+            {% block breadcrumb_items %}{% endblock %}
+        </div>
+        {% endblock %}
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle"></i>
+                {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle"></i>
+                {% else %}
+                <i class="fas fa-info-circle"></i>
+                {% endif %}
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Main Content -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-store"></i> TechShop</h3>
+                <p>Лучший выбор электроники и гаджетов. Гарантия качества и быстрая доставка.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Категории</h3>
+                <ul>
+                    <li><a href="#">Смартфоны</a></li>
+                    <li><a href="#">Ноутбуки</a></li>
+                    <li><a href="#">Наушники</a></li>
+                    <li><a href="#">Гаджеты</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Помощь</h3>
+                <ul>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Гарантия</a></li>
+                    <li><a href="#">Возврат товара</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> 8 (800) 123-45-67</li>
+                    <li><i class="fas fa-envelope"></i> info@techshop.ru</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Москва, ул. Техническая, 15</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            © 2024 TechShop. Все права защищены.
+        </div>
+    </footer>
+
+    <script>
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            // Плавное появление элементов
+            const elements = document.querySelectorAll('.product-card, .card');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Поиск с подсказками
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.addEventListener('focus', function() {
+                    this.style.boxShadow = '0 0 0 3px rgba(67, 97, 238, 0.2)';
+                });
+                
+                searchInput.addEventListener('blur', function() {
+                    this.style.boxShadow = 'none';
+                });
+            }
+
+            // Анимация кнопок корзины
+            const cartButtons = document.querySelectorAll('.add-to-cart');
+            cartButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const cartCount = document.querySelector('.cart-count');
+                    if (cartCount) {
+                        // Анимация увеличения
+                        cartCount.style.transform = 'scale(1.5)';
+                        setTimeout(() => {
+                            cartCount.style.transform = 'scale(1)';
+                        }, 300);
+                        
+                        // Увеличиваем счетчик
+                        let count = parseInt(cartCount.textContent) || 0;
+                        cartCount.textContent = count + 1;
+                    }
+                    
+                    // Анимация кнопки
+                    this.style.backgroundColor = 'var(--success)';
+                    this.innerHTML = '<i class="fas fa-check"></i> Добавлено';
+                    
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                        this.innerHTML = '<i class="fas fa-cart-plus"></i> В корзину';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
