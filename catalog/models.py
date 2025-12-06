@@ -65,9 +65,26 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.brand.name} {self.product_name}"
 
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={'slug': self.slug})
+
     @property
     def in_stock(self):
         return self.stock > 0
+
+    @property
+    def average_rating(self):
+        from reviews.models import Review
+        reviews = Review.objects.filter(product=self)
+        if reviews.exists():
+            total = sum(review.rating for review in reviews)
+            return round(total / reviews.count(), 1)
+        return 0.0
+
+    @property
+    def reviews_count(self):
+        from reviews.models import Review
+        return Review.objects.filter(product=self).count()
 
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
