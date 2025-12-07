@@ -1,9 +1,9 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib import auth 
 from django.urls import reverse
 
-from users.forms import UserLoginForm
+from users.forms import UserLoginForm, UserRegistrationForm
 
 
 
@@ -29,9 +29,24 @@ def login(request):
 
 
 
+
+
 def registration(request):
+
+    if request.method == 'POST': # если метод GET то формируем пустой запрос и отправлем в контекст 
+        form = UserRegistrationForm(data=request.POST) # передаем словарь с данными введенными от пользователя
+        if form.is_valid():
+            form.save() # если форма валидна заносим пользователя в бд
+            user = form.instance
+            auth.login(request, user) # Если пользователь залогинился сразу регаем его 
+            return HttpResponseRedirect(reverse('main:index')) # после регистрации переносим его на любую страницу (когда сделаем фронт ПЕРЕДЕЛАТЬ)
+    else:  
+        form = UserRegistrationForm()
+
     context={
-        'title': 'Home - Регистрация'
+        'title': 'Home - Регистрация',
+        'form' : form,
+
     }
     return render(request,'users/registration.html',context)
 
@@ -46,7 +61,5 @@ def profile(request):
 
 
 def logout(request):
-    context={
-        'title': 'Home - Авторизация'
-    }
-    return render(request,'',context)
+    auth.logout(request)
+    return redirect(reverse('main:index')) ### Тоже ПЕРЕДЕЛЬ перессылку когда будет фронт 
