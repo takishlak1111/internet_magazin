@@ -59,13 +59,13 @@ def registration(request):
 def profile(request):
 
     if request.method == 'POST': # если метод GET то формируем пустой запрос и отправлем в контекст 
-        form = ProfileForm(data=request.POST, isinstance = request.user, files=request.FILES) 
+        form = ProfileForm(data=request.POST, instance = request.user, files=request.FILES) 
         if form.is_valid():
             form.save() 
 
             return HttpResponseRedirect(reverse('user:profile')) # после регистрации переносим его на лк
     else:  
-        form = ProfileForm(isinstance = request.user)
+        form = ProfileForm(instance = request.user)
 
     context={
         'title': 'Home - Кабинет',

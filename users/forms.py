@@ -87,7 +87,7 @@ class ProfileForm(UserChangeForm): # чистто информация о пол
         'email',
     )
 
-    first_name = forms.ImageField()
-    last_name = forms.ImageField()
-    username = forms.ImageField()
-    email = forms.ImageField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    username = forms.CharField()
+    email = forms.EmailField()
