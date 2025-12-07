@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
 from internet_magazin.users.models import User
 
@@ -77,3 +77,17 @@ class UserRegistrationForm(UserCreationForm):
         )
     )
 
+
+class ProfileForm(UserChangeForm): # чистто информация о пользователе в личном кабинете 
+    model = User
+    fields = (
+        'first_name',
+        'last_name',
+        'username',
+        'email',
+    )
+
+    first_name = forms.ImageField()
+    last_name = forms.ImageField()
+    username = forms.ImageField()
+    email = forms.ImageField()
