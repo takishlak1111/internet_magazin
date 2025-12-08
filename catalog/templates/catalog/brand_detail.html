@@ -1,0 +1,35 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ brand.name }} - Каталог{% endblock %}
+{% block page_title %}Бренд: {{ brand.name }}{% endblock %}
+
+{% block content %}
+    <p><a href="{% url 'catalog:product_list' %}">← Все бренды</a></p>
+    
+    {% if brand.description %}
+        <p>{{ brand.description }}</p>
+    {% endif %}
+    
+    {% if brand.logo %}
+        <p><img src="{{ brand.logo.url }}" alt="{{ brand.name }}" style="max-width: 200px;"></p>
+    {% endif %}
+    
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <h3><a href="{% url 'catalog:product_detail' product.slug %}">{{ product.product_name }}</a></h3>
+                <p>Категория: <a href="{% url 'catalog:category_detail' product.category.slug %}">{{ product.category.name }}</a></p>
+                <div class="product-price">{{ product.price }} руб.</div>
+                <div class="product-stock {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
+                    {% if product.in_stock %}
+                        ✓ В наличии
+                    {% else %}
+                        ✗ Нет в наличии
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>У этого бренда пока нет товаров.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

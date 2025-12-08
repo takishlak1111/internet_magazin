@@ -1,0 +1,29 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ category.name }} - Каталог{% endblock %}
+{% block page_title %}Категория: {{ category.name }}{% endblock %}
+
+{% block content %}
+    <p><a href="{% url 'catalog:product_list' %}">← Все категории</a></p>
+    
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <h3><a href="{% url 'catalog:product_detail' product.slug %}">{{ product.product_name }}</a></h3>
+                {% if product.brand %}
+                    <p>Бренд: <strong>{{ product.brand.name }}</strong></p>
+                {% endif %}
+                <div class="product-price">{{ product.price }} руб.</div>
+                <div class="product-stock {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
+                    {% if product.in_stock %}
+                        ✓ В наличии
+                    {% else %}
+                        ✗ Нет в наличии
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>В этой категории пока нет товаров.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

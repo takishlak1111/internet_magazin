@@ -1,0 +1,52 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Авторизация{% endblock %}
+{% block page_title %}Авторизация{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Вход в систему</h2>
+    
+    <form method="post">
+        {% csrf_token %}  <!-- ВАЖНО: CSRF-токен -->
+        
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="form-errors">
+                    {{ form.username.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Пароль:</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="form-errors">
+                    {{ form.password.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        {% if form.non_field_errors %}
+            <div class="message error">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+        <button type="submit" class="btn btn-block">
+            Войти
+        </button>
+        
+        {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+    </form>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <p>Нет аккаунта? <a href="{% url 'users:registration' %}">Зарегистрируйтесь</a></p>
+    </div>
+</div>
+{% endblock %}

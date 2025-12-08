@@ -1,25 +1,38 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
-from internet_magazin.users.models import User
+from users.models import User
 
 
-class UserLoginForm(AuthenticationForm ):
-    username = forms.CharField()
-    password = forms.CharField()
+class UserLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Введите имя пользователя'
+        })
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Введите пароль'
+        })
+    )
 
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'password')
 
 class UserRegistrationForm(UserCreationForm):
     
     class Meta:
         model= User
         fields = (
-            'first_name',
-            'last_name',
             'username',
             'email',
-            'password_1',
-            'password_2',
+            'password1',
+            'password2',
         )
     
     first_name = forms.CharField(
@@ -59,7 +72,7 @@ class UserRegistrationForm(UserCreationForm):
         )
     )
 
-    password_1 = forms.CharField(
+    password1 = forms.CharField(
         widget=forms.PasswordInput(
            attrs={
                 'class':'form-control',
@@ -68,7 +81,7 @@ class UserRegistrationForm(UserCreationForm):
         )
     )
 
-    password_2 = forms.CharField(
+    password2 = forms.CharField(
         widget=forms.PasswordInput(
            attrs={
                 'class':'form-control',
@@ -78,16 +91,43 @@ class UserRegistrationForm(UserCreationForm):
     )
 
 
-class ProfileForm(UserChangeForm): # чистто информация о пользователе в личном кабинете 
-    model = User
-    fields = (
-        'first_name',
-        'last_name',
-        'username',
-        'email',
+class ProfileForm(forms.ModelForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'readonly': 'readonly'
+        })
+    )
+    email = forms.CharField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control'
+        })
+    )
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control'
+        })
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control'
+        })
+    )
+    image = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'form-control'
+        })
     )
 
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    username = forms.CharField()
-    email = forms.EmailField()
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email', 
+            'first_name', 
+            'last_name', 
+            'image'
+            )

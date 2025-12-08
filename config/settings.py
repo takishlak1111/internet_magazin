@@ -27,6 +27,14 @@ INSTALLED_APPS = [
     #'orders',
     #'reviews',
 ]
+AUTH_USER_MODEL = 'users.User'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_REDIRECT_URL = 'catalog:product_list'
+LOGOUT_REDIRECT_URL = 'catalog:product_list'
+LOGIN_URL = 'users:login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -62,8 +70,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'internet_shop_db',
-        'USER': 'shop_admin',
+        'NAME': 'mpv',
+        'USER': 'mpv',
+        'PASSWORD':'mixail2007',
         'HOST': 'localhost',
         'PORT': '5432',
     }

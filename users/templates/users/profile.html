@@ -1,0 +1,67 @@
+\{% extends 'catalog/base.html' %}
+
+{% block title %}Личный кабинет{% endblock %}
+{% block page_title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<div class="form-container" style="max-width: 600px;">
+    <h2>Личный кабинет</h2>
+    
+    <div style="display: flex; gap: 30px; margin-bottom: 30px;">
+        <div style="flex: 1; text-align: center;">
+            {% if user.image %}
+                <img src="{{ user.image.url }}" alt="Аватар" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #4CAF50;">
+            {% else %}
+                <div style="width: 150px; height: 150px; border-radius: 50%; background-color: #ddd; display: flex; align-items: center; justify-content: center; border: 3px solid #ccc; margin: 0 auto;">
+                    <span style="color: #666;">Нет фото</span>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div style="flex: 2;">
+            <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Имя:</strong> {{ user.first_name|default:"Не указано" }}</p>
+            <p><strong>Фамилия:</strong> {{ user.last_name|default:"Не указано" }}</p>
+            <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</p>
+            <p><strong>Последний вход:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
+        </div>
+    </div>
+    
+    <h3 style="border-bottom: 2px solid #4CAF50; padding-bottom: 10px; margin-bottom: 20px;">Редактировать профиль</h3>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}  <!-- ВАЖНО: CSRF-токен -->
+        
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
+            {{ form.username }}
+            <div class="form-help-text">Только для чтения</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email:</label>
+            {{ form.email }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.first_name.id_for_label }}">Имя:</label>
+            {{ form.first_name }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
+            {{ form.last_name }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.image.id_for_label }}">Изображение профиля:</label>
+            {{ form.image }}
+        </div>
+        
+        <button type="submit" class="btn">
+            Сохранить изменения
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ product.product_name }} - Каталог{% endblock %}
+{% block page_title %}{{ product.product_name }}{% endblock %}
+
+{% block content %}
+    <div class="product-detail">
+        <h2>{{ product.product_name }}</h2>
+        
+        <div style="display: flex; gap: 30px;">
+            <div style="flex: 2;">
+                <p><strong>Описание:</strong> {{ product.description }}</p>
+                <p><strong>Бренд:</strong> 
+                    {% if product.brand %}
+                        <a href="{% url 'catalog:brand_detail' product.brand.slug %}">{{ product.brand.name }}</a>
+                    {% else %}
+                        Без бренда
+                    {% endif %}
+                </p>
+                <p><strong>Категория:</strong> 
+                    <a href="{% url 'catalog:category_detail' product.category.slug %}">{{ product.category.name }}</a>
+                </p>
+                <p><strong>Цена:</strong> <span class="product-price">{{ product.price }} руб.</span></p>
+                <p><strong>Наличие:</strong> 
+                    <span class="{% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
+                        {% if product.in_stock %}
+                            ✓ В наличии ({{ product.stock }} шт.)
+                        {% else %}
+                            ✗ Нет в наличии
+                        {% endif %}
+                    </span>
+                </p>
+                <p><strong>Рейтинг:</strong> {{ product.average_rating }} ⭐ ({{ product.reviews_count }} отзывов)</p>
+                <p><strong>Дата добавления:</strong> {{ product.created_at|date:"d.m.Y" }}</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <a href="{% url 'catalog:product_list' %}">← Вернуться к списку товаров</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Поиск товаров - Каталог{% endblock %}
+{% block page_title %}Результаты поиска{% endblock %}
+
+{% block content %}
+    {% if query %}
+        <p>Результаты поиска по запросу: "<strong>{{ query }}</strong>"</p>
+    {% else %}
+        <p>Все товары:</p>
+    {% endif %}
+    
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <h3><a href="{% url 'catalog:product_detail' product.slug %}">{{ product.product_name }}</a></h3>
+                {% if product.brand %}
+                    <p>Бренд: <strong>{{ product.brand.name }}</strong></p>
+                {% endif %}
+                <p>Категория: <a href="{% url 'catalog:category_detail' product.category.slug %}">{{ product.category.name }}</a></p>
+                <div class="product-price">{{ product.price }} руб.</div>
+                <div class="product-stock {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
+                    {% if product.in_stock %}
+                        ✓ В наличии
+                    {% else %}
+                        ✗ Нет в наличии
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>По вашему запросу ничего не найдено.</p>
+        {% endfor %}
+    </div>
+    
+    <p><a href="{% url 'catalog:product_list' %}">← Вернуться ко всем товарам</a></p>
+{% endblock %}
