@@ -23,7 +23,7 @@ INSTALLED_APPS = [
 
     'catalog',
     'users',
-    #'cart',
+    'cart',
     #'orders',
     #'reviews',
 ]
@@ -70,11 +70,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mpv',
-        'USER': 'mpv',
-        'PASSWORD':'',# тут пароль к бд
+        'NAME': 'internet',
+        'USER': 'vadim',
+        'PASSWORD':'12345',# тут пароль к бд
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
