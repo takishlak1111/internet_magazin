@@ -1,67 +1,210 @@
-\{% extends 'catalog/base.html' %}
+<!-- users/profile.html -->
+{% extends 'catalog/base.html' %}
 
 {% block title %}Личный кабинет{% endblock %}
 {% block page_title %}Личный кабинет{% endblock %}
 
 {% block content %}
-<div class="form-container" style="max-width: 600px;">
-    <h2>Личный кабинет</h2>
-    
-    <div style="display: flex; gap: 30px; margin-bottom: 30px;">
-        <div style="flex: 1; text-align: center;">
-            {% if user.image %}
-                <img src="{{ user.image.url }}" alt="Аватар" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #4CAF50;">
+<div class="profile-container" style="max-width: 1200px;">
+    <div class="profile-layout" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+        <!-- Левая колонка: Информация профиля -->
+        <div>
+            <h2>Личный кабинет</h2>
+            
+            <div style="display: flex; gap: 30px; margin-bottom: 30px;">
+                <div style="flex: 1; text-align: center;">
+                    {% if user.image %}
+                        <img src="{{ user.image.url }}" alt="Аватар" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #4CAF50;">
+                    {% else %}
+                        <div style="width: 150px; height: 150px; border-radius: 50%; background-color: #ddd; display: flex; align-items: center; justify-content: center; border: 3px solid #ccc; margin: 0 auto;">
+                            <span style="color: #666;">Нет фото</span>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div style="flex: 2;">
+                    <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Имя:</strong> {{ user.first_name|default:"Не указано" }}</p>
+                    <p><strong>Фамилия:</strong> {{ user.last_name|default:"Не указано" }}</p>
+                    <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</p>
+                    <p><strong>Последний вход:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
+                </div>
+            </div>
+            
+            <!-- Сообщения об ошибках/успехе -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" style="margin-bottom: 20px; padding: 10px; border-radius: 4px; 
+                        {% if message.tags == 'success' %}background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+                        {% elif message.tags == 'error' %}background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+                        {% else %}background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb;{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <h3 style="border-bottom: 2px solid #4CAF50; padding-bottom: 10px; margin-bottom: 20px;">Редактировать профиль</h3>
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
+                    {{ form.username }}
+                    <div class="form-help-text">Только для чтения</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email:</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="error" style="color: red; font-size: 12px;">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.first_name.id_for_label }}">Имя:</label>
+                    {{ form.first_name }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
+                    {{ form.last_name }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.image.id_for_label }}">Изображение профиля:</label>
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                        <div class="error" style="color: red; font-size: 12px;">{{ form.image.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="btn" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                    Сохранить изменения
+                </button>
+            </form>
+        </div>
+        
+        <!-- Правая колонка: Корзина -->
+        <div>
+            <h3 style="border-bottom: 2px solid #2196F3; padding-bottom: 10px; margin-bottom: 20px;">Моя корзина</h3>
+            
+            {% if cart_items %}
+                <div class="cart-summary" style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
+                    <h4 style="margin-top: 0;">Товаров в корзине: {{ cart_items|length }}</h4>
+                    
+                    <div class="cart-items" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+                        {% for item in cart_items %}
+                        <div class="cart-item" style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #ddd;">
+                            {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}" 
+                                 style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px; border-radius: 4px;">
+                            {% else %}
+                            <div style="width: 50px; height: 50px; background-color: #eee; display: flex; align-items: center; justify-content: center; margin-right: 15px; border-radius: 4px;">
+                                <span style="font-size: 12px;">Нет фото</span>
+                            </div>
+                            {% endif %}
+                            
+                            <div style="flex-grow: 1;">
+                                <strong>{{ item.product.product_name }}</strong><br>
+                                <small>{{ item.quantity }} × {{ item.product.price }} ₽</small>
+                            </div>
+                            
+                            <strong style="white-space: nowrap;">
+                                {{ item.total }} ₽
+                            </strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div style="border-top: 2px solid #2196F3; padding-top: 15px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 18px;">
+                            <strong>Итого:</strong>
+                            <strong style="color: #2196F3;">{{ cart_total }} ₽</strong>
+                        </div>
+                    </div>
+                </div>
             {% else %}
-                <div style="width: 150px; height: 150px; border-radius: 50%; background-color: #ddd; display: flex; align-items: center; justify-content: center; border: 3px solid #ccc; margin: 0 auto;">
-                    <span style="color: #666;">Нет фото</span>
+                <div class="empty-cart" style="background-color: #f5f5f5; padding: 40px 20px; text-align: center; border-radius: 8px;">
+                    <p style="color: #666; margin-bottom: 20px;">Ваша корзина пуста</p>
+                    <a href="{% url 'catalog:product_list' %}" class="btn" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+                        Перейти в каталог
+                    </a>
                 </div>
             {% endif %}
-        </div>
-        
-        <div style="flex: 2;">
-            <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Имя:</strong> {{ user.first_name|default:"Не указано" }}</p>
-            <p><strong>Фамилия:</strong> {{ user.last_name|default:"Не указано" }}</p>
-            <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</p>
-            <p><strong>Последний вход:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
+            
+            <!-- Дополнительная информация -->
+            <div style="margin-top: 30px; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: #666;">Быстрые действия</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">
+                        <a href="{% url 'catalog:product_list' %}" style="color: #2196F3; text-decoration: none;">
+                            ↪️ Продолжить покупки
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Убедитесь, что это правильный URL для выхода -->
+                        <a href="{% url 'users:logout' %}" style="color: #f44336; text-decoration: none;">
+                            🔒 Выйти из аккаунта
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-    
-    <h3 style="border-bottom: 2px solid #4CAF50; padding-bottom: 10px; margin-bottom: 20px;">Редактировать профиль</h3>
-    
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}  <!-- ВАЖНО: CSRF-токен -->
-        
-        <div class="form-group">
-            <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
-            {{ form.username }}
-            <div class="form-help-text">Только для чтения</div>
-        </div>
-        
-        <div class="form-group">
-            <label for="{{ form.email.id_for_label }}">Email:</label>
-            {{ form.email }}
-        </div>
-        
-        <div class="form-group">
-            <label for="{{ form.first_name.id_for_label }}">Имя:</label>
-            {{ form.first_name }}
-        </div>
-        
-        <div class="form-group">
-            <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
-            {{ form.last_name }}
-        </div>
-        
-        <div class="form-group">
-            <label for="{{ form.image.id_for_label }}">Изображение профиля:</label>
-            {{ form.image }}
-        </div>
-        
-        <button type="submit" class="btn">
-            Сохранить изменения
-        </button>
-    </form>
 </div>
+
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    
+    .form-help-text {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    
+    .btn:hover {
+        background-color: #45a049;
+    }
+    
+    .cart-item:hover {
+        background-color: #f9f9f9;
+    }
+    
+    @media (max-width: 768px) {
+        .profile-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 {% endblock %}

@@ -5,38 +5,211 @@
 
 {% block content %}
     <div class="product-detail">
-        <h2>{{ product.product_name }}</h2>
-        
-        <div style="display: flex; gap: 30px;">
+        <div style="display: flex; gap: 40px; margin-bottom: 30px;">
+            <!-- Левая колонка: Изображение товара -->
+            <div style="flex: 1;">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.product_name }}" 
+                         style="width: 100%; max-width: 400px; height: auto; border-radius: 8px; border: 1px solid #ddd;">
+                {% else %}
+                    <div style="width: 100%; max-width: 400px; height: 300px; background-color: #f5f5f5; 
+                                display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #ddd;">
+                        <span style="color: #666;">Изображение отсутствует</span>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Правая колонка: Информация о товаре -->
             <div style="flex: 2;">
-                <p><strong>Описание:</strong> {{ product.description }}</p>
-                <p><strong>Бренд:</strong> 
-                    {% if product.brand %}
-                        <a href="{% url 'catalog:brand_detail' product.brand.slug %}">{{ product.brand.name }}</a>
-                    {% else %}
-                        Без бренда
-                    {% endif %}
-                </p>
-                <p><strong>Категория:</strong> 
-                    <a href="{% url 'catalog:category_detail' product.category.slug %}">{{ product.category.name }}</a>
-                </p>
-                <p><strong>Цена:</strong> <span class="product-price">{{ product.price }} руб.</span></p>
-                <p><strong>Наличие:</strong> 
-                    <span class="{% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
-                        {% if product.in_stock %}
-                            ✓ В наличии ({{ product.stock }} шт.)
+                <h2>{{ product.product_name }}</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Описание:</strong> {{ product.description }}</p>
+                    <p><strong>Бренд:</strong> 
+                        {% if product.brand %}
+                            <a href="{% url 'catalog:brand_detail' product.brand.slug %}">{{ product.brand.name }}</a>
                         {% else %}
-                            ✗ Нет в наличии
+                            Без бренда
                         {% endif %}
-                    </span>
-                </p>
-                <p><strong>Рейтинг:</strong> {{ product.average_rating }} ⭐ ({{ product.reviews_count }} отзывов)</p>
-                <p><strong>Дата добавления:</strong> {{ product.created_at|date:"d.m.Y" }}</p>
+                    </p>
+                    <p><strong>Категория:</strong> 
+                        <a href="{% url 'catalog:category_detail' product.category.slug %}">{{ product.category.name }}</a>
+                    </p>
+                </div>
+                
+                <!-- Блок с ценой и наличием -->
+                <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div>
+                            <span style="font-size: 24px; font-weight: bold; color: #e74c3c;">{{ product.price }} руб.</span>
+                        </div>
+                        <div>
+                            <span class="{% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}" 
+                                  style="padding: 5px 10px; border-radius: 4px; font-weight: bold;">
+                                {% if product.in_stock %}
+                                    ✓ В наличии ({{ product.stock }} шт.)
+                                {% else %}
+                                    ✗ Нет в наличии
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <p><strong>Рейтинг:</strong> 
+                            <span style="color: #f39c12;">
+                                {% if product.average_rating %}
+                                    {{ product.average_rating }} ⭐
+                                {% else %}
+                                    Нет оценок
+                                {% endif %}
+                            </span>
+                            ({{ product.reviews_count }} отзывов)
+                        </p>
+                        <p><strong>Дата добавления:</strong> {{ product.created_at|date:"d.m.Y" }}</p>
+                    </div>
+                    
+                    <!-- Кнопка добавления в корзину -->
+                    {% if product.in_stock %}
+                        <div style="margin-top: 20px;">
+                            <form action="{% url 'cart:add' product.id %}" method="post" class="add-to-cart-form" style="display: flex; gap: 10px; align-items: center;">
+                                {% csrf_token %}
+                                
+                                <div style="display: flex; align-items: center;">
+                                    <label for="quantity" style="margin-right: 10px; font-weight: bold;">Количество:</label>
+                                    <input type="number" name="quantity" id="quantity" 
+                                           value="1" min="1" max="{{ product.stock }}" 
+                                           style="width: 70px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                </div>
+                                
+                                <button type="submit" class="btn-add-to-cart" 
+                                        style="background-color: #27ae60; color: white; border: none; padding: 12px 24px; 
+                                               border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.3s;">
+                                    <span style="display: inline-flex; align-items: center; gap: 8px;">
+                                        🛒 Добавить в корзину
+                                    </span>
+                                </button>
+                            </form>
+                            
+                            <!-- Уведомление об успешном добавлении (будет показано через JavaScript) -->
+                            <div id="cart-notification" 
+                                 style="display: none; margin-top: 10px; padding: 10px; background-color: #d4edda; 
+                                        color: #155724; border-radius: 4px; border: 1px solid #c3e6cb;">
+                                Товар успешно добавлен в корзину!
+                            </div>
+                        </div>
+                    {% else %}
+                        <div style="margin-top: 20px; padding: 15px; background-color: #f8d7da; color: #721c24; 
+                                    border-radius: 4px; border: 1px solid #f5c6cb; text-align: center;">
+                            <p style="margin: 0;">Товар временно отсутствует на складе</p>
+                            <button onclick="notifyWhenAvailable()" 
+                                    style="margin-top: 10px; padding: 8px 16px; background-color: #6c757d; 
+                                           color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                Уведомить о поступлении
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div style="margin-top: 20px;">
+                    <a href="{% url 'catalog:product_list' %}">← Вернуться к списку товаров</a>
+                </div>
             </div>
         </div>
-        
-        <div style="margin-top: 20px;">
-            <a href="{% url 'catalog:product_list' %}">← Вернуться к списку товаров</a>
-        </div>
     </div>
+    
+    <style>
+        .btn-add-to-cart:hover {
+            background-color: #219653 !important;
+        }
+        
+        .btn-add-to-cart:active {
+            transform: scale(0.98);
+        }
+        
+        .in-stock {
+            color: #27ae60;
+            background-color: #d5f4e6;
+        }
+        
+        .out-of-stock {
+            color: #e74c3c;
+            background-color: #fadbd8;
+        }
+        
+        input[type="number"] {
+            text-align: center;
+        }
+        
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+    </style>
+    
+    <script>
+        // AJAX добавление в корзину
+        document.querySelectorAll('.add-to-cart-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const url = this.action;
+                const notification = document.getElementById('cart-notification');
+                
+                fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Показываем уведомление
+                        if (notification) {
+                            notification.style.display = 'block';
+                            notification.style.animation = 'fadeIn 0.5s';
+                            
+                            // Скрываем уведомление через 3 секунды
+                            setTimeout(() => {
+                                notification.style.display = 'none';
+                            }, 3000);
+                        }
+                        
+                        // Обновляем счетчик корзины (если такой элемент есть)
+                        const cartCount = document.querySelector('.cart-count');
+                        if (cartCount && data.cart_count !== undefined) {
+                            cartCount.textContent = data.cart_count;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Произошла ошибка при добавлении товара в корзину');
+                });
+            });
+        });
+        
+        // Уведомление о поступлении товара
+        function notifyWhenAvailable() {
+            const email = prompt('Введите ваш email для уведомления:');
+            if (email) {
+                alert(`Спасибо! Мы уведомим вас на ${email}, когда товар появится в наличии.`);
+            }
+        }
+        
+        // Анимация появления уведомления
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 {% endblock %}

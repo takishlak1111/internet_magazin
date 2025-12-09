@@ -1,8 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
-
-from users.models import User
-
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .models import User 
 
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
@@ -20,74 +18,56 @@ class UserLoginForm(AuthenticationForm):
 
     class Meta:
         model = User
-        fields = (
-            'username',
-            'password')
+        fields = ('username', 'password')
+
 
 class UserRegistrationForm(UserCreationForm):
-    
     class Meta:
-        model= User
-        fields = (
-            'username',
-            'email',
-            'password1',
-            'password2',
-        )
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
     
     first_name = forms.CharField(
-        widget=forms.TextInput(
-           attrs={
-                'class':'form-control',
-                'placeholder': 'Введите ваше имя'
-           }
-        )
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Введите ваше имя'
+        })
     )
 
     last_name = forms.CharField(
-        widget=forms.TextInput(
-           attrs={
-                'class':'form-control',
-                'placeholder': 'Введите вашу фамилию'
-           }
-        )
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Введите вашу фамилию'
+        })
     )
 
     username = forms.CharField(
-        widget=forms.TextInput(
-           attrs={
-                'class':'form-control',
-                'placeholder': 'Введите ваше имя пользователя'
-           }
-        )
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Введите ваше имя пользователя'
+        })
     )
 
-
     email = forms.CharField(
-        widget=forms.EmailInput(
-           attrs={
-                'class':'form-control',
-                'placeholder': 'Введите вашу почту'
-           }
-        )
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Введите вашу почту'
+        })
     )
 
     password1 = forms.CharField(
-        widget=forms.PasswordInput(
-           attrs={
-                'class':'form-control',
-                'placeholder': 'Введите ваш пароль'
-           }
-        )
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Введите ваш пароль'
+        })
     )
 
     password2 = forms.CharField(
-        widget=forms.PasswordInput(
-           attrs={
-                'class':'form-control',
-                'placeholder': 'Подтвердите ваш пароль'
-           }
-        )
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Подтвердите ваш пароль'
+        })
     )
 
 
@@ -124,10 +104,4 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = (
-            'username',
-            'email', 
-            'first_name', 
-            'last_name', 
-            'image'
-            )
+        fields = ('username', 'email', 'first_name', 'last_name', 'image')
