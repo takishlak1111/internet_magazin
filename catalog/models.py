@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator
+from django.db.models import Avg
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Навзание категории")
@@ -71,16 +72,16 @@ class Product(models.Model):
     def in_stock(self):
         return self.stock > 0
 
-    # @property
-    # def average_rating(self):
-    #     from reviews.models import Review
-    #     reviews = Review.objects.filter(product=self)
-    #     if reviews.exists():
-    #         total = sum(review.rating for review in reviews)
-    #         return round(total / reviews.count(), 1)
-    #     return 0.0
+    @property
+    def average_rating(self):
+        from reviews.models import Review
+        reviews = Review.objects.filter(product=self)
+        if reviews.exists():
+            total = sum(review.rating for review in reviews)
+            return round(total / reviews.count(), 1)
+        return 0.0
 
-    # @property
-    # def reviews_count(self):
-    #     from reviews.models import Review
-    #     return Review.objects.filter(product=self).count()
+    @property
+    def reviews_count(self):
+        from reviews.models import Review
+        return Review.objects.filter(product=self).count()
