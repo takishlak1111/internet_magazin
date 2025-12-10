@@ -83,7 +83,7 @@
                                     Нет оценок
                                 {% endif %}
                             </span>
-                            ({{ product.reviews_count }} отзывов)
+                            <span style="color: #666; font-size: 14px;">({{ product.reviews_count }} отзывов)</span>
                         </p>
                         <p><strong>Дата добавления:</strong> {{ product.created_at|date:"d.m.Y" }}</p>
                     </div>
@@ -141,6 +141,143 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Блок отзывов -->
+        <div style="margin-top: 40px; border-top: 2px solid #eee; padding-top: 30px;">
+            <h3 style="margin-bottom: 20px; color: #333;">Отзывы покупателей</h3>
+            
+            <!-- Статистика отзывов -->
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
+                <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px; font-weight: bold; color: #f39c12;">
+                            {{ product.average_rating|default:"0.0" }}
+                        </div>
+                        <div style="font-size: 14px; color: #666;">Средний рейтинг</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
+                            <span style="font-size: 14px; color: #666;">5 звезд</span>
+                            <span style="font-size: 14px; color: #666;">{{ product.reviews_count }} отзывов</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Форма добавления отзыва -->
+            {% if user.is_authenticated %}
+                {% if not user_has_review %}
+                <div style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 25px; margin-bottom: 30px;">
+                    <h4 style="margin-top: 0; margin-bottom: 20px; color: #333;">Оставить отзыв</h4>
+                    <form method="post" action="{% url 'reviews:add_review' product.id %}">
+                        {% csrf_token %}
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Ваша оценка:</label>
+                            <div style="display: flex; gap: 10px;">
+                                {% for i in "12345" %}
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="rating" value="{{ forloop.counter }}" 
+                                           style="display: none;">
+                                    <span style="font-size: 24px; color: #ddd; transition: color 0.3s;" 
+                                          onmouseover="this.style.color='#f39c12'" 
+                                          onmouseout="this.style.color='#ddd'"
+                                          onclick="setRating(this)">★</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" name="rating_input" id="rating_input" value="5">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label for="review_text" style="display: block; margin-bottom: 8px; font-weight: bold;">Текст отзыва:</label>
+                            <textarea name="text" id="review_text" rows="4" 
+                                      placeholder="Расскажите о вашем опыте использования товара..."
+                                      style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <button type="submit" 
+                                style="background-color: #3498db; color: white; border: none; padding: 12px 24px; 
+                                       border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.3s;">
+                            📝 Отправить отзыв
+                        </button>
+                    </form>
+                </div>
+                {% else %}
+                <div style="background-color: #e8f4fc; border: 1px solid #b3d7ff; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: center;">
+                    <p style="margin: 0; color: #0c5460; font-weight: bold;">
+                        ✅ Вы уже оставили отзыв на этот товар
+                    </p>
+                </div>
+                {% endif %}
+            {% else %}
+            <div style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: center;">
+                <p style="margin: 0; color: #666;">
+                    <a href="{% url 'users:login' %}" style="color: #3498db; text-decoration: none; font-weight: bold;">
+                        Войдите
+                    </a>, чтобы оставить отзыв
+                </p>
+            </div>
+            {% endif %}
+            
+            <!-- Список отзывов -->
+            <div>
+                <h4 style="margin-bottom: 20px; color: #333;">Все отзывы ({{ reviews|length }})</h4>
+                
+                {% if reviews %}
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    {% for review in reviews %}
+                    <div style="background-color: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                            <div>
+                                <div style="font-weight: bold; color: #333; margin-bottom: 5px;">
+                                    {{ review.user.username }}
+                                </div>
+                                <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <span style="color: #f39c12; font-size: 16px;">★</span>
+                                        {% else %}
+                                            <span style="color: #ddd; font-size: 16px;">★</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div style="color: #666; font-size: 14px;">
+                                {{ review.created_at|date:"d.m.Y H:i" }}
+                                {% if user == review.user %}
+                                <form action="{% url 'reviews:delete_review' review.id %}" method="post" style="display: inline; margin-left: 10px;">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                            onclick="return confirm('Удалить отзыв?')"
+                                            style="background: none; border: none; color: #e74c3c; cursor: pointer; padding: 0; margin-left: 10px;">
+                                        Удалить
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        {% if review.text %}
+                        <div style="color: #555; line-height: 1.6;">
+                            {{ review.text|linebreaks }}
+                        </div>
+                        {% else %}
+                        <div style="color: #999; font-style: italic;">
+                            Пользователь не оставил текстовый отзыв
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 40px 20px; background-color: #f8f9fa; border-radius: 8px;">
+                    <p style="color: #666; margin-bottom: 10px;">Пока нет отзывов на этот товар</p>
+                    <p style="color: #999; font-size: 14px;">Будьте первым, кто оставит отзыв!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
     
     <style>
@@ -174,6 +311,15 @@
         a:hover {
             text-decoration: underline;
         }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #3498db !important;
+        }
+        
+        input[type="radio"]:checked + span {
+            color: #f39c12 !important;
+        }
     </style>
     
     <script>
@@ -184,5 +330,78 @@
                 alert(`Спасибо! Мы уведомим вас на ${email}, когда товар появится в наличии.`);
             }
         }
+        
+        // Функция для установки рейтинга
+        function setRating(star) {
+            const stars = star.parentElement.parentElement.querySelectorAll('label');
+            const rating = Array.from(stars).indexOf(star.parentElement) + 1;
+            const ratingInput = document.getElementById('rating_input');
+            
+            // Обновляем визуальное отображение
+            stars.forEach((label, index) => {
+                const starSpan = label.querySelector('span');
+                if (index < rating) {
+                    starSpan.style.color = '#f39c12';
+                } else {
+                    starSpan.style.color = '#ddd';
+                }
+            });
+            
+            // Устанавливаем значение в скрытое поле
+            ratingInput.value = rating;
+            
+            // Также обновляем радио-кнопки
+            const radioButtons = star.parentElement.parentElement.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach((radio, index) => {
+                radio.checked = (index + 1) === rating;
+            });
+        }
+        
+        // Инициализация рейтинга при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('label span[onclick]');
+            if (stars.length > 0) {
+                // Устанавливаем начальный рейтинг 5
+                const initialRating = 5;
+                stars.forEach((star, index) => {
+                    if (index < initialRating) {
+                        star.style.color = '#f39c12';
+                    }
+                });
+            }
+        });
+        
+        // AJAX отправка формы отзыва
+        document.querySelectorAll('form[action*="add_review"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const url = this.action;
+                
+                fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Отзыв успешно добавлен!');
+                        window.location.reload();
+                    } else {
+                        alert('Ошибка: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Если AJAX не сработал, отправляем форму обычным способом
+                    this.submit();
+                });
+            });
+        });
     </script>
 {% endblock %}
