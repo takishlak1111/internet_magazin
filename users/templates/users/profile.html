@@ -1,4 +1,3 @@
-<!-- users/profile.html -->
 {% extends 'catalog/base.html' %}
 
 {% block title %}Личный кабинет{% endblock %}
@@ -30,6 +29,9 @@
                     <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</p>
                     <p><strong>Последний вход:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
                     <p><strong>Товаров в корзине:</strong> {{ cart_items|length }}</p>
+                    {% if orders_count > 0 %}
+                    <p><strong>Всего заказов:</strong> {{ orders_count }}</p>
+                    {% endif %}
                 </div>
             </div>
             
@@ -88,84 +90,86 @@
             </form>
         </div>
         
-        <!-- Правая колонка: Корзина -->
+        <!-- Правая колонка: Корзина и быстрые действия -->
         <div>
+            <!-- Блок корзины -->
             <h3 style="border-bottom: 2px solid #2196F3; padding-bottom: 10px; margin-bottom: 20px;">Моя корзина</h3>
             
             {% if cart_items %}
                 <div class="cart-summary" style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
                     <h4 style="margin-top: 0;">Товаров в корзине: {{ cart_items|length }}</h4>
                     
-                    <div class="cart-items" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+                    <div class="cart-items" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;">
                         {% for item in cart_items %}
                         <div class="cart-item" style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #ddd;">
                             {% if item.product.image %}
                             <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}" 
-                                 style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px; border-radius: 4px;">
+                                 style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px; border-radius: 4px;">
                             {% else %}
-                            <div style="width: 50px; height: 50px; background-color: #eee; display: flex; align-items: center; justify-content: center; margin-right: 15px; border-radius: 4px;">
-                                <span style="font-size: 12px;">Нет фото</span>
+                            <div style="width: 40px; height: 40px; background-color: #eee; display: flex; align-items: center; justify-content: center; margin-right: 10px; border-radius: 4px;">
+                                <span style="font-size: 10px;">Нет фото</span>
                             </div>
                             {% endif %}
                             
                             <div style="flex-grow: 1;">
-                                <strong>
-                                    <a href="{% url 'catalog:product_detail' item.product.slug %}" style="text-decoration: none; color: #333;">
-                                        {{ item.product.product_name }}
-                                    </a>
+                                <strong style="font-size: 14px;">
+                                    {{ item.product.product_name|truncatechars:20 }}
                                 </strong><br>
-                                <small>{{ item.quantity }} × {{ item.product.price }} ₽</small>
+                                <small style="font-size: 12px;">{{ item.quantity }} × {{ item.product.price }} ₽</small>
                             </div>
                             
-                            <strong style="white-space: nowrap; color: #e74c3c;">
+                            <strong style="white-space: nowrap; color: #e74c3c; font-size: 14px;">
                                 {{ item.total }} ₽
                             </strong>
-                            
-                            <!-- Кнопка удаления из корзины -->
-                            <form action="{% url 'cart:remove' item.id %}" method="post" style="margin-left: 10px;">
-                                {% csrf_token %}
-                                <button type="submit" style="background: none; border: none; color: #f44336; cursor: pointer; padding: 5px; font-size: 16px;" 
-                                        onclick="return confirm('Удалить товар из корзины?')">
-                                    ×
-                                </button>
-                            </form>
                         </div>
                         {% endfor %}
                     </div>
                     
                     <div style="border-top: 2px solid #2196F3; padding-top: 15px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 18px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 16px;">
                             <strong>Итого:</strong>
                             <strong style="color: #e74c3c;">{{ cart_total }} ₽</strong>
                         </div>
                     </div>
                     
-                    <!-- Кнопка оформить заказ -->
+                    <!-- Одна кнопка: оформление заказа -->
                     <div style="margin-top: 20px;">
-                        <a href="{% url 'cart:view' %}" class="btn" style="background-color: #2196F3; color: white; padding: 12px 24px; 
-                               text-decoration: none; border-radius: 4px; display: block; text-align: center; font-weight: bold;">
-                            📋 Перейти к оформлению
+                        <a href="{% url 'orders:create' %}" class="btn" style="background-color: #27ae60; color: white; padding: 12px; 
+                               text-decoration: none; border-radius: 4px; text-align: center; font-weight: bold; font-size: 14px; display: block;">
+                            📦 Оформить заказ
                         </a>
                     </div>
                 </div>
             {% else %}
-                <div class="empty-cart" style="background-color: #f5f5f5; padding: 40px 20px; text-align: center; border-radius: 8px;">
-                    <p style="color: #666; margin-bottom: 20px; font-size: 16px;">Ваша корзина пуста</p>
-                    <a href="{% url 'catalog:product_list' %}" class="btn" style="background-color: #4CAF50; color: white; padding: 12px 24px; 
-                           text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">
+                <div class="empty-cart" style="background-color: #f5f5f5; padding: 30px 20px; text-align: center; border-radius: 8px;">
+                    <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Ваша корзина пуста</p>
+                    <a href="{% url 'catalog:product_list' %}" class="btn" style="background-color: #4CAF50; color: white; padding: 10px 20px; 
+                           text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold; font-size: 14px;">
                         🛍️ Перейти в каталог
                     </a>
                 </div>
             {% endif %}
             
-            <!-- Дополнительная информация -->
-            <div style="margin-top: 20px; padding: 15px; background-color: #e8f4fc; border-radius: 8px; border-left: 4px solid #2196F3;">
-                <h4 style="margin-top: 0; color: #0c5460;">Информация о корзине</h4>
-                <p style="color: #666; font-size: 14px;">
-                    • Товары хранятся в корзине 30 дней<br>
-                    • Вы можете изменить количество в детальном просмотре корзины<br>
-                    • Для удаления товара нажмите на крестик рядом с ним
-                </p>
+            <!-- Быстрые действия -->
+            <div style="margin-top: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: #666; font-size: 16px;">Быстрые действия</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">
+                        <a href="{% url 'catalog:product_list' %}" style="color: #2196F3; text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                            <span>🛍️</span> Продолжить покупки
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="{% url 'orders:list' %}" style="color: #9b59b6; text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                            <span>📋</span> Все мои заказы
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'users:logout' %}" style="color: #f44336; text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                            <span>🔒</span> Выйти из аккаунта
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -243,13 +247,11 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Перезагружаем страницу для обновления корзины
                         window.location.reload();
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // Если AJAX не сработал, отправляем форму обычным способом
                     this.submit();
                 });
             }

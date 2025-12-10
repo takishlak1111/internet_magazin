@@ -1,0 +1,302 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Оформление заказа{% endblock %}
+{% block page_title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Оформление заказа</h2>
+    
+    {% if messages %}
+    <div style="margin-bottom: 30px;">
+        {% for message in messages %}
+        <div style="padding: 12px; border-radius: 4px; margin-bottom: 10px;
+                    {% if message.tags == 'success' %}background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+                    {% elif message.tags == 'error' %}background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+                    {% else %}background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb;{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+        <!-- Левая колонка: Форма заказа -->
+        <div>
+            <div style="background-color: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; margin-bottom: 25px; color: #333; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
+                    📝 Данные для заказа
+                </h3>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- ФИО -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            ФИО <span style="color: red;">*</span>
+                        </label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
+                        <div style="color: #e74c3c; font-size: 14px; margin-top: 5px;">
+                            {% for error in form.full_name.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Email -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            Email <span style="color: red;">*</span>
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div style="color: #e74c3c; font-size: 14px; margin-top: 5px;">
+                            {% for error in form.email.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Телефон -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            Телефон <span style="color: red;">*</span>
+                        </label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                        <div style="color: #e74c3c; font-size: 14px; margin-top: 5px;">
+                            {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                        <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                            Пример: +7 (999) 123-45-67
+                        </small>
+                    </div>
+                    
+                    <!-- Адрес -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            Адрес доставки <span style="color: red;">*</span>
+                        </label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                        <div style="color: #e74c3c; font-size: 14px; margin-top: 5px;">
+                            {% for error in form.address.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                        <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                            Укажите полный адрес для доставки
+                        </small>
+                    </div>
+                    
+                    <!-- Комментарий -->
+                    
+                    
+                    <!-- Способ оплаты -->
+                    <div style="margin-bottom: 30px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            Способ оплаты <span style="color: red;">*</span>
+                        </label>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            {% for choice in form.payment.field.choices %}
+                            <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
+                                <input type="radio" name="payment" value="{{ choice.0 }}" 
+                                       {% if form.payment.value == choice.0 %}checked{% endif %}
+                                       style="width: 18px; height: 18px;">
+                                <div>
+                                    <strong>{{ choice.1 }}</strong>
+                                    {% if choice.0 == 'cash' %}
+                                    <div style="color: #666; font-size: 13px; margin-top: 3px;">Оплата при получении</div>
+                                    {% elif choice.0 == 'card' %}
+                                    <div style="color: #666; font-size: 13px; margin-top: 3px;">Картой курьеру</div>
+                                    {% elif choice.0 == 'online' %}
+                                    <div style="color: #666; font-size: 13px; margin-top: 3px;">Онлайн-оплата</div>
+                                    {% endif %}
+                                </div>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        {% if form.payment.errors %}
+                        <div style="color: #e74c3c; font-size: 14px; margin-top: 5px;">
+                            {% for error in form.payment.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Кнопки -->
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <a href="{% url 'users:profile' %}" 
+                           style="flex: 1; padding: 14px; background-color: #95a5a6; color: white; text-align: center; 
+                                  border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 16px;">
+                            ← Отмена
+                        </a>
+                        <button type="submit" 
+                                style="flex: 2; padding: 14px; background-color: #27ae60; color: white; border: none; 
+                                       border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s;">
+                            📦 Оформить заказ
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <small style="color: #666;">
+                            Нажимая кнопку, вы соглашаетесь с 
+                            <a href="#" style="color: #3498db;">правилами обработки заказов</a>
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Правая колонка: Детали заказа -->
+        <div>
+            <div style="background-color: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; margin-bottom: 25px; color: #333; border-bottom: 2px solid #e74c3c; padding-bottom: 10px;">
+                    🛒 Ваш заказ
+                </h3>
+                
+                <!-- Список товаров -->
+                <div style="margin-bottom: 25px;">
+                    <h4 style="margin-bottom: 15px; color: #333;">Товары в заказе ({{ items|length }})</h4>
+                    
+                    <div style="max-height: 300px; overflow-y: auto; padding-right: 10px;">
+                        {% for item in items %}
+                        <div style="display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee;">
+                            <div style="width: 60px; height: 60px; background-color: #f5f5f5; border-radius: 6px; 
+                                        display: flex; align-items: center; justify-content: center;">
+                                {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}" 
+                                     style="max-width: 100%; max-height: 100%; border-radius: 4px;">
+                                {% else %}
+                                <span style="color: #999; font-size: 11px;">Нет фото</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold; margin-bottom: 5px; font-size: 15px;">
+                                    {{ item.product.product_name }}
+                                </div>
+                                <div style="color: #666; font-size: 13px;">
+                                    Бренд: {{ item.product.brand.name|default:"Не указан" }}
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: right;">
+                                <div style="font-weight: bold; color: #e74c3c; font-size: 16px;">
+                                    {{ item.total }} ₽
+                                </div>
+                                <div style="color: #666; font-size: 14px;">
+                                    {{ item.product.price }} ₽ × {{ item.quantity }} шт.
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Итоговая сумма -->
+                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                    <h4 style="margin-top: 0; margin-bottom: 15px; color: #333;">Стоимость заказа</h4>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: #666;">Товары ({{ items|length }})</span>
+                            <span style="font-weight: bold;">{{ cart.total }} ₽</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: #666;">Доставка</span>
+                            <span style="color: #27ae60; font-weight: bold;">Бесплатно</span>
+                        </div>
+                        
+                        <hr style="border: none; border-top: 1px dashed #ddd; margin: 15px 0;">
+                        
+                        <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; color: #e74c3c;">
+                            <span>Итого к оплате</span>
+                            <span>{{ cart.total }} ₽</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Информация о статусе -->
+                <div style="background-color: #e8f4fc; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db;">
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <div style="font-size: 20px;">📦</div>
+                        <div>
+                            <div style="font-weight: bold; color: #0c5460; margin-bottom: 5px;">Статус заказа: <span style="color: #3498db;">Новый</span></div>
+                            <div style="color: #666; font-size: 14px;">
+                                После оформления заказа с вами свяжется менеджер для подтверждения
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Дополнительная информация -->
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <h5 style="margin-bottom: 10px; color: #666;">Что будет дальше?</h5>
+                    <ol style="padding-left: 20px; color: #666; font-size: 14px;">
+                        <li style="margin-bottom: 8px;">Вы получите подтверждение заказа на email</li>
+                        <li style="margin-bottom: 8px;">Наш менеджер свяжется для уточнения деталей</li>
+                        <li style="margin-bottom: 8px;">Заказ будет собран и отправлен вам</li>
+                        <li>Вы сможете отслеживать статус в личном кабинете</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+    }
+    
+    input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, textarea:focus, select:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    input[type="radio"] {
+        accent-color: #3498db;
+    }
+    
+    label[for^="id_"] {
+        display: block;
+        margin-bottom: 8px;
+    }
+    
+    button[type="submit"]:hover {
+        background-color: #219653 !important;
+    }
+    
+    /* Стили для прокрутки */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+</style>
+{% endblock %}

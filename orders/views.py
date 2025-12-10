@@ -10,7 +10,7 @@ from .forms import OrderForm
 @login_required
 def create_order(request):
     cart = get_object_or_404(Cart, user=request.user)
-    items = cart.товары.all()
+    items = cart.items.all()
 
     if not items.exists():
         messages.warning(request, 'Корзина пуста')
@@ -80,4 +80,4 @@ def order_list(request):
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
-    return render(request, 'orders/detail.html', {'order': order})
+    return redirect('catalog:product_list')

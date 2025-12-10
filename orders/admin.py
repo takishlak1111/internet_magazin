@@ -20,7 +20,7 @@ class OrderAdmin(admin.ModelAdmin):
             'fields': ('number', 'user', 'status', 'total', 'created')
         }),
         ('Данные клиента', {
-            'fields': ('full_name', 'email', 'phone', 'address', 'comment')
+            'fields': ('full_name', 'email', 'phone', 'address', )
         }),
         ('Оплата', {
             'fields': ('payment', 'is_paid', 'paid_date')
