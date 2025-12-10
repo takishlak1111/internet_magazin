@@ -1,34 +1,29 @@
-<!-- catalog/templates/catalog/product_list.html -->
 {% extends 'catalog/base.html' %}
 
 {% block title %}Все товары - Каталог{% endblock %}
 {% block page_title %}Все товары{% endblock %}
 
 {% block content %}
-<div class="product-grid">
-    {% for product in products %}
-    <div class="product-card">
-        <!-- ИСПРАВЬ ЭТУ СТРОКУ - УБЕРИ ССЫЛКУ НА PRODUCT_DETAIL -->
-        <h3>{{ product.product_name }}</h3>  <!-- ← БЕЗ ССЫЛКИ! -->
-        
-        {% if product.brand %}
-            <p>Бренд: <strong>{{ product.brand.name }}</strong></p>
-        {% endif %}
-        
-        <!-- ЭТУ ТОЖЕ ИСПРАВЬ - category_detail может не существовать -->
-        <p>Категория: {{ product.category.name }}</p>  <!-- ← БЕЗ ССЫЛКИ! -->
-        
-        <div class="product-price">{{ product.price }} руб.</div>
-        <div class="product-stock {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
-            {% if product.in_stock %}
-                В наличии ({{ product.stock }} шт.)
-            {% else %}
-                Нет в наличии
-            {% endif %}
-        </div>
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <h3><a href="{% url 'catalog:product_detail' product.slug %}">{{ product.product_name }}</a></h3>
+                {% if product.brand %}
+                    <p>Бренд: <strong>{{ product.brand.name }}</strong></p>
+                {% endif %}
+                <p>Категория: <a href="{% url 'catalog:category_detail' product.category.slug %}">{{ product.category.name }}</a></p>
+                <div class="product-price">{{ product.price }} руб.</div>
+                <div class="product-stock {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
+                    {% if product.in_stock %}
+                        ✓ В наличии ({{ product.stock }} шт.)
+                    {% else %}
+                        ✗ Нет в наличии
+                    {% endif %}
+                </div>
+                <p>Рейтинг: {{ product.average_rating }} ⭐ ({{ product.reviews_count }} отзывов)</p>
+            </div>
+        {% empty %}
+            <p>Товаров не найдено.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-        <p>Товары не найдены</p>
-    {% endfor %}
-</div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404  
 from django.db.models import Q
 from .models import Product, Category, Brand
 
@@ -53,3 +53,31 @@ def product_list(request):
     }
 
     return render(request, 'catalog/product_list.html', context)
+
+
+def category_detail(request, slug):
+
+    category = get_object_or_404(Category, slug=slug)
+    products = Product.objects.filter(category=category)
+    
+    context = {
+        'category': category,
+        'products': products,
+    }
+    return render(request, 'catalog/category_detail.html', context)
+
+def product_detail(request, slug):
+    
+    product = get_object_or_404(Product, slug=slug)
+    
+    
+    related_products = Product.objects.filter(
+        category=product.category
+    ).exclude(id=product.id)[:4]  # 4 товара из той же категории
+    
+    context = {
+        'product': product,
+        'related_products': related_products,
+    }
+    
+    return render(request, 'catalog/product_detail.html', context)

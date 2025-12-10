@@ -4,6 +4,21 @@
 {% block page_title %}{{ product.product_name }}{% endblock %}
 
 {% block content %}
+    <!-- Сообщения Django -->
+    {% if messages %}
+        <div style="margin-bottom: 20px;">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" 
+                     style="padding: 12px; border-radius: 4px; 
+                            {% if message.tags == 'success' %}background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+                            {% elif message.tags == 'error' %}background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+                            {% else %}background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb;{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
     <div class="product-detail">
         <div style="display: flex; gap: 40px; margin-bottom: 30px;">
             <!-- Левая колонка: Изображение товара -->
@@ -27,13 +42,17 @@
                     <p><strong>Описание:</strong> {{ product.description }}</p>
                     <p><strong>Бренд:</strong> 
                         {% if product.brand %}
-                            <a href="{% url 'catalog:brand_detail' product.brand.slug %}">{{ product.brand.name }}</a>
+                            <a href="{% url 'catalog:product_list' %}?brand={{ product.brand.slug }}">
+                                {{ product.brand.name }}
+                            </a>
                         {% else %}
                             Без бренда
                         {% endif %}
                     </p>
                     <p><strong>Категория:</strong> 
-                        <a href="{% url 'catalog:category_detail' product.category.slug %}">{{ product.category.name }}</a>
+                        <a href="{% url 'catalog:product_list' %}?category={{ product.category.slug }}">
+                            {{ product.category.name }}
+                        </a>
                     </p>
                 </div>
                 
@@ -72,7 +91,9 @@
                     <!-- Кнопка добавления в корзину -->
                     {% if product.in_stock %}
                         <div style="margin-top: 20px;">
-                            <form action="{% url 'cart:add' product.id %}" method="post" class="add-to-cart-form" style="display: flex; gap: 10px; align-items: center;">
+                            <!-- РАБОЧАЯ ФОРМА ДЛЯ ДОБАВЛЕНИЯ В КОРЗИНУ -->
+                            <form action="{% url 'cart:add' product.id %}" method="post" 
+                                  style="display: flex; gap: 10px; align-items: center;">
                                 {% csrf_token %}
                                 
                                 <div style="display: flex; align-items: center;">
@@ -90,13 +111,6 @@
                                     </span>
                                 </button>
                             </form>
-                            
-                            <!-- Уведомление об успешном добавлении (будет показано через JavaScript) -->
-                            <div id="cart-notification" 
-                                 style="display: none; margin-top: 10px; padding: 10px; background-color: #d4edda; 
-                                        color: #155724; border-radius: 4px; border: 1px solid #c3e6cb;">
-                                Товар успешно добавлен в корзину!
-                            </div>
                         </div>
                     {% else %}
                         <div style="margin-top: 20px; padding: 15px; background-color: #f8d7da; color: #721c24; 
@@ -112,8 +126,18 @@
                 </div>
                 
                 <!-- Быстрые ссылки -->
-                <div style="margin-top: 20px;">
-                    <a href="{% url 'catalog:product_list' %}">← Вернуться к списку товаров</a>
+                <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="{% url 'catalog:product_list' %}" 
+                       style="color: #3498db; text-decoration: none; font-weight: bold; padding: 8px 16px; border: 1px solid #3498db; border-radius: 4px;">
+                        ← Вернуться к списку товаров
+                    </a>
+                    
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'users:profile' %}" 
+                       style="color: #2ecc71; text-decoration: none; font-weight: bold; padding: 8px 16px; border: 1px solid #2ecc71; border-radius: 4px;">
+                        📋 Посмотреть корзину
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -146,54 +170,13 @@
         input[type="number"]::-webkit-outer-spin-button {
             opacity: 1;
         }
+        
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
     
     <script>
-        // AJAX добавление в корзину
-        document.querySelectorAll('.add-to-cart-form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const formData = new FormData(this);
-                const url = this.action;
-                const notification = document.getElementById('cart-notification');
-                
-                fetch(url, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    credentials: 'same-origin'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Показываем уведомление
-                        if (notification) {
-                            notification.style.display = 'block';
-                            notification.style.animation = 'fadeIn 0.5s';
-                            
-                            // Скрываем уведомление через 3 секунды
-                            setTimeout(() => {
-                                notification.style.display = 'none';
-                            }, 3000);
-                        }
-                        
-                        // Обновляем счетчик корзины (если такой элемент есть)
-                        const cartCount = document.querySelector('.cart-count');
-                        if (cartCount && data.cart_count !== undefined) {
-                            cartCount.textContent = data.cart_count;
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Произошла ошибка при добавлении товара в корзину');
-                });
-            });
-        });
-        
         // Уведомление о поступлении товара
         function notifyWhenAvailable() {
             const email = prompt('Введите ваш email для уведомления:');
@@ -201,15 +184,5 @@
                 alert(`Спасибо! Мы уведомим вас на ${email}, когда товар появится в наличии.`);
             }
         }
-        
-        // Анимация появления уведомления
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(-10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 {% endblock %}

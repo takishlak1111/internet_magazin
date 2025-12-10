@@ -70,7 +70,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mpv',
+        'NAME': 'magaz',
         'USER': 'mpv',
         'PASSWORD':'mixail2007',
         'HOST': 'localhost',
