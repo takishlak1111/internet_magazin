@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #555;
+            margin: 30px 0 20px 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea.form-control {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .order-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .order-items th,
+        .order-items td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-items th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .order-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-row.total {
+            font-size: 20px;
+            font-weight: bold;
+            border-top: 2px solid #ddd;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-bottom: none;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .payment-method {
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .payment-method.selected {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+        
+        .payment-method input {
+            margin-right: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background: #218838;
+        }
+        
+        .btn-back {
+            background: #6c757d;
+            margin-right: 15px;
+        }
+        
+        .btn-back:hover {
+            background: #545b62;
+        }
+        
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .nav-links {
+            margin-bottom: 20px;
+        }
+        
+        .nav-links a {
+            margin-right: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="/catalog/">Каталог</a>
+            <a href="/cart/">Корзина</a>
+            <a href="/orders/">Мои заказы</a>
+        </div>
+        
+        <h1>Оформление заказа</h1>
+        
+        {% if error %}
+            <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+                {{ error }}
+            </div>
+        {% endif %}
+        
+        {% if cart_items %}
+            <!-- Товары в заказе -->
+            <h2>Товары в заказе</h2>
+            <table class="order-items">
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th>Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.product_name }}</td>
+                        <td>{{ item.product.price }} руб.</td>
+                        <td>{{ item.quantity }} шт.</td>
+                        <td>{{ item.total }} руб.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <!-- Итоговая сумма -->
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Товары ({{ total_quantity }} шт.)</span>
+                    <span>{{ subtotal }} руб.</span>
+                </div>
+                <div class="summary-row">
+                    <span>Доставка</span>
+                    <span>{{ shipping_cost }} руб.</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Итого к оплате:</span>
+                    <span>{{ total_amount }} руб.</span>
+                </div>
+            </div>
+            
+            <!-- Форма заказа -->
+            <form method="post">
+                {% csrf_token %}
+                
+                <h2>Данные получателя</h2>
+                
+                <div class="form-group">
+                    <label for="full_name">ФИО *</label>
+                    <input type="text" id="full_name" name="full_name" class="form-control" 
+                           value="{{ form.full_name.value|default:user.get_full_name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" class="form-control" 
+                           value="{{ form.email.value|default:user.email }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Телефон *</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" 
+                           value="{{ form.phone.value }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Адрес доставки *</label>
+                    <textarea id="address" name="address" class="form-control" required>{{ form.address.value }}</textarea>
+                </div>
+                
+                <h2>Способ оплаты</h2>
+                <div class="payment-methods">
+                    {% for value, label in payment_methods %}
+                    <label class="payment-method {% if form.payment.value == value or forloop.first and not form.payment.value %}selected{% endif %}">
+                        <input type="radio" name="payment" value="{{ value }}" 
+                               {% if form.payment.value == value or forloop.first and not form.payment.value %}checked{% endif %}>
+                        {{ label }}
+                    </label>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="comment">Комментарий к заказу</label>
+                    <textarea id="comment" name="comment" class="form-control" placeholder="Дополнительные пожелания...">{{ form.comment.value }}</textarea>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <a href="/cart/" class="btn btn-back">Вернуться в корзину</a>
+                    <button type="submit" class="btn">Подтвердить заказ</button>
+                </div>
+            </form>
+        {% else %}
+            <div style="text-align: center; padding: 50px;">
+                <h2>Корзина пуста</h2>
+                <p>Добавьте товары в корзину для оформления заказа</p>
+                <a href="/catalog/" class="btn">Перейти в каталог</a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <script>
+        // Выбор способа оплаты
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.payment-method').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                this.closest('.payment-method').classList.add('selected');
+            });
+        });
+        
+        // Автозаполнение телефона при вводе
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = '+' + value;
+                } else if (value.length <= 5) {
+                    value = '+' + value.substring(0, 1) + ' (' + value.substring(1);
+                } else if (value.length <= 8) {
+                    value = '+' + value.substring(0, 1) + ' (' + value.substring(1, 4) + ') ' + value.substring(4);
+                } else {
+                    value = '+' + value.substring(0, 1) + ' (' + value.substring(1, 4) + ') ' + value.substring(4, 7) + '-' + value.substring(7, 9) + '-' + value.substring(9, 11);
+                }
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
