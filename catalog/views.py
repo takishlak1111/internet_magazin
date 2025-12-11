@@ -12,6 +12,7 @@ def product_list(request):
     min_price = request.GET.get('min_price', '')
     max_price = request.GET.get('max_price', '')
     in_stock = request.GET.get('in_stock', '')
+    min_rating = request.GET.get('min_rating', '')
 
     if query:
         products = products.filter(
@@ -40,6 +41,7 @@ def product_list(request):
     if in_stock:
         products = products.filter(stock__gt=0)
 
+
     context = {
         'products': products,
         'categories': Category.objects.all(),
@@ -50,6 +52,7 @@ def product_list(request):
         'current_min_price': min_price,
         'current_max_price': max_price,
         'current_in_stock': in_stock,
+        'current_min_rating': min_rating,
     }
 
     return render(request, 'catalog/product_list.html', context)
