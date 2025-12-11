@@ -63,7 +63,7 @@ class Product(models.Model):
         indexes = [models.Index(fields=['slug']), models.Index(fields=['price']), models.Index(fields=['created_at'])]
 
     def __str__(self):
-        return f"{self.brand.name} {self.product_name}"
+         return f"{self.brand.name} {self.product_name}"
 
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
