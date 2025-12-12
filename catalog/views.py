@@ -13,6 +13,35 @@ def product_list(request):
     max_price = request.GET.get('max_price', '')
     in_stock = request.GET.get('in_stock', '')
 
+    min_rating = request.GET.get('min_rating')
+    max_rating = request.GET.get('max_rating')
+
+    if min_rating or max_rating:
+        filtered_products = []
+
+        for product in products:
+            avg_rating = product.average_rating
+            include = True
+
+            if min_rating:
+                try:
+                    if avg_rating < float(min_rating):
+                        include = False
+                except (ValueError, TypeError):
+                    pass
+
+            if max_rating:
+                try:
+                    if avg_rating > float(max_rating):
+                        include = False
+                except (ValueError, TypeError):
+                    pass
+
+            if include:
+                filtered_products.append(product)
+
+        products = filtered_products
+
     if query:
         products = products.filter(
             Q(product_name__icontains=query) |
@@ -51,6 +80,8 @@ def product_list(request):
         'current_min_price': min_price,
         'current_max_price': max_price,
         'current_in_stock': in_stock,
+        'current_min_rating': min_rating,
+        'current_max_rating': max_rating,
     }
 
     return render(request, 'catalog/product_list.html', context)
