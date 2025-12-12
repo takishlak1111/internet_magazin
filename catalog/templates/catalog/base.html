@@ -88,6 +88,13 @@
             width: 80px;
             padding: 8px;
         }
+        .filter-select-small {
+            width: 90px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background: white;
+        }
         .filter-checkbox {
             display: flex;
             align-items: center;
@@ -191,6 +198,11 @@
             background-color: #f8d7da;
             color: #721c24;
         }
+        .product-rating {
+            color: #ffc107;
+            margin: 8px 0;
+            font-size: 14px;
+        }
         .product-detail {
             background-color: white;
             padding: 20px;
@@ -292,6 +304,11 @@
         .star-option {
             color: #ffc107;
         }
+        .rating-input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
     </style>
 </head>
 <body>
@@ -344,7 +361,7 @@
                 <!-- Фильтр по цене -->
                 <div class="filter-group">
                     <label>Цена, руб.</label>
-                    <div style="display: flex; align-items: center; gap: 5px;">
+                    <div class="rating-input-group">
                         <input type="number" name="min_price" 
                                value="{{ request.GET.min_price|default:'' }}" 
                                placeholder="от" 
@@ -357,7 +374,43 @@
                     </div>
                 </div>
                 
-
+                <!-- Фильтр по рейтингу -->
+                <div class="filter-group">
+                    <label>Рейтинг</label>
+                    <div class="rating-input-group">
+                        <select name="min_rating" class="filter-select-small">
+                            <option value="">от</option>
+                            <option value="1" {% if request.GET.min_rating == "1" %}selected{% endif %}>1 ★</option>
+                            <option value="2" {% if request.GET.min_rating == "2" %}selected{% endif %}>2 ★★</option>
+                            <option value="3" {% if request.GET.min_rating == "3" %}selected{% endif %}>3 ★★★</option>
+                            <option value="4" {% if request.GET.min_rating == "4" %}selected{% endif %}>4 ★★★★</option>
+                            <option value="5" {% if request.GET.min_rating == "5" %}selected{% endif %}>5 ★★★★★</option>
+                        </select>
+                        <span>-</span>
+                        <select name="max_rating" class="filter-select-small">
+                            <option value="">до</option>
+                            <option value="1" {% if request.GET.max_rating == "1" %}selected{% endif %}>1 ★</option>
+                            <option value="2" {% if request.GET.max_rating == "2" %}selected{% endif %}>2 ★★</option>
+                            <option value="3" {% if request.GET.max_rating == "3" %}selected{% endif %}>3 ★★★</option>
+                            <option value="4" {% if request.GET.max_rating == "4" %}selected{% endif %}>4 ★★★★</option>
+                            <option value="5" {% if request.GET.max_rating == "5" %}selected{% endif %}>5 ★★★★★</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Фильтр по бренду -->
+                <div class="filter-group">
+                    <label>Бренд</label>
+                    <select name="brand" class="filter-input">
+                        <option value="">Все бренды</option>
+                        {% for brand in brands %}
+                            <option value="{{ brand.slug }}" 
+                                    {% if request.GET.brand == brand.slug %}selected{% endif %}>
+                                {{ brand.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
                 
                 <!-- Фильтр по категории -->
                 <div class="filter-group">
