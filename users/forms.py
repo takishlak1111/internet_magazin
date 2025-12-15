@@ -26,21 +26,6 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
     
-    first_name = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Введите ваше имя'
-        })
-    )
-
-    last_name = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Введите вашу фамилию'
-        })
-    )
 
     username = forms.CharField(
         widget=forms.TextInput(attrs={
