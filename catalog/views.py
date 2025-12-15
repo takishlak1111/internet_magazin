@@ -32,7 +32,6 @@ def product_list(request):
     min_rating = request.GET.get('min_rating')
     max_rating = request.GET.get('max_rating')
 
-    # Фильтрация по рейтингу
     if min_rating or max_rating:
         filtered_products = []
         for product in products:
@@ -54,7 +53,6 @@ def product_list(request):
                 filtered_products.append(product)
         products = filtered_products
 
-    # Остальные фильтры
     if query:
         products = products.filter(
             Q(product_name__icontains=query) |

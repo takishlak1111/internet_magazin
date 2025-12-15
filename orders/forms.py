@@ -15,7 +15,6 @@ class OrderForm(forms.ModelForm):
 
     Виджеты:
         address: Textarea с 3 строками.
-        comment: Textarea с 2 строками (если есть в модели).
 
     Методы:
         __init__(): Инициализирует форму, подставляя данные пользователя.
@@ -25,7 +24,6 @@ class OrderForm(forms.ModelForm):
         fields = ['full_name', 'email', 'phone', 'address', 'payment']
         widgets = {
             'address': forms.Textarea(attrs={'rows': 3}),
-            'comment': forms.Textarea(attrs={'rows': 2}),
         }
 
     def __init__(self, *args, **kwargs):

@@ -31,12 +31,10 @@ def create_order(request):
     cart = get_object_or_404(Cart, user=request.user)
     items = cart.items.all()
 
-    # Проверка наличия товаров
     if not items.exists():
         messages.warning(request, 'Корзина пуста')
         return redirect('cart:detail')
 
-    # Проверка достаточности товаров
     for item in items:
         if item.quantity > item.product.stock:
             messages.error(request, f'Недостаточно товара: {item.product.product_name}')
@@ -47,14 +45,12 @@ def create_order(request):
         if form.is_valid():
             try:
                 with transaction.atomic():
-                    # Создание заказа
                     order = form.save(commit=False)
                     order.user = request.user
                     order.cart = cart
                     order.total = cart.total()
                     order.save()
 
-                    # Создание позиций заказа
                     for item in items:
                         OrderItem.objects.create(
                             order=order,
@@ -63,11 +59,9 @@ def create_order(request):
                             quantity=item.quantity
                         )
 
-                        # Обновление остатков
                         item.product.stock -= item.quantity
                         item.product.save()
 
-                    # Очистка корзины
                     items.delete()
 
                     messages.success(request, f'Заказ #{order.number} создан!')
@@ -76,7 +70,6 @@ def create_order(request):
             except Exception as e:
                 messages.error(request, f'Ошибка: {str(e)}')
     else:
-        # Заполнение начальных данных
         initial = {}
         if request.user.first_name and request.user.last_name:
             initial['full_name'] = f'{request.user.first_name} {request.user.last_name}'
@@ -128,4 +121,4 @@ def order_detail(request, order_id):
         HttpResponseRedirect: Редирект на список товаров.
     """
     order = get_object_or_404(Order, id=order_id, user=request.user)
-    return redirect('catalog:product_list')
+    return render(request, 'orders/detail.html', {'order': order})
