@@ -58,7 +58,6 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
-<<<<<<< HEAD
 
     first_name = forms.CharField(
         required=False,
@@ -75,9 +74,7 @@ class UserRegistrationForm(UserCreationForm):
             'placeholder': 'Введите вашу фамилию'
         })
     )
-=======
-    
->>>>>>> a09abf6e971940624d1cd7c4ed88851f911fdd37
+
 
     username = forms.CharField(
         widget=forms.TextInput(attrs={
