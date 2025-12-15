@@ -3,6 +3,17 @@ from .models import Review
 
 
 class ReviewForm(forms.ModelForm):
+    """
+    Форма для создания и редактирования отзыва.
+
+    Поля:
+        rating: Оценка от 1 до 5 звезд.
+        text: Текстовый отзыв.
+
+    Виджеты:
+        rating: Select с вариантами от 1 до 5.
+        text: Textarea с 3 строками и placeholder.
+    """
     class Meta:
         model = Review
         fields = ['rating', 'text']

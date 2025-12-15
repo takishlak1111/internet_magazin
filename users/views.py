@@ -1,4 +1,3 @@
-# users/views.py
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -10,6 +9,15 @@ from .forms import ProfileForm, UserLoginForm, UserRegistrationForm
 
 
 def login(request):
+    """
+    Обрабатывает аутентификацию пользователя.
+
+    Args:
+        request (HttpRequest): Объект запроса.
+
+    Returns:
+        HttpResponse: Страница входа или редирект на главную при успешной аутентификации.
+    """
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
@@ -30,6 +38,15 @@ def login(request):
 
 
 def registration(request):
+    """
+    Обрабатывает регистрацию нового пользователя.
+
+    Args:
+        request (HttpRequest): Объект запроса.
+
+    Returns:
+        HttpResponse: Страница регистрации или редирект на главную при успешной регистрации.
+    """
     if request.method == 'POST':
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
@@ -49,15 +66,24 @@ def registration(request):
 
 @login_required
 def profile(request):
+    """
+    Отображает и обрабатывает редактирование профиля пользователя.
+
+    Также отображает информацию о корзине пользователя.
+
+    Args:
+        request (HttpRequest): Объект запроса.
+
+    Returns:
+        HttpResponse: Страница профиля пользователя.
+    """
     user = request.user
-    
-    
+
     cart, created = Cart.objects.get_or_create(user=user)
-    
-    
+
     cart_items = CartItem.objects.filter(cart=cart)
     cart_total = cart.total() if cart_items.exists() else 0
-    
+
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -70,7 +96,7 @@ def profile(request):
                     messages.error(request, f'{field}: {error}')
     else:
         form = ProfileForm(instance=user)
-    
+
     context = {
         'title': 'Home - Кабинет',
         'form': form,
@@ -78,10 +104,19 @@ def profile(request):
         'cart_total': cart_total,
         'user': user,
     }
-    
+
     return render(request, 'users/profile.html', context)
 
 
 def logout(request):
+    """
+    Выполняет выход пользователя из системы.
+
+    Args:
+        request (HttpRequest): Объект запроса.
+
+    Returns:
+        HttpResponseRedirect: Редирект на главную страницу каталога.
+    """
     auth_logout(request)
     return redirect(reverse('catalog:product_list'))
