@@ -32,7 +32,7 @@
 - **pip** (менеджер пакетов Python)
 
 ### Установка PostgreSQL 16.0:
-
+```bash
 # Для Ubuntu/Debian:
 sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
@@ -59,7 +59,7 @@ ALTER ROLE shopuser SET default_transaction_isolation TO 'read committed';
 ALTER ROLE shopuser SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE shopdb TO shopuser;
 \q
-
+```bash
 ## 4. ОСНОВНЫЕ СЦЕНАРИИ ИСПОЛЬЗОВАНИЯ
 
 Данный проект представляет собой веб-приложение, поэтому основные сценарии использования демонстрируются через пользовательский интерфейс. Примеры работы функций показаны в разделе 5 с помощью скриншотов.
