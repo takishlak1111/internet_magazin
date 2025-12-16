@@ -59,7 +59,7 @@ ALTER ROLE shopuser SET default_transaction_isolation TO 'read committed';
 ALTER ROLE shopuser SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE shopdb TO shopuser;
 \q
-```bash
+```
 ## 4. ОСНОВНЫЕ СЦЕНАРИИ ИСПОЛЬЗОВАНИЯ
 
 Данный проект представляет собой веб-приложение, поэтому основные сценарии использования демонстрируются через пользовательский интерфейс. Примеры работы функций показаны в разделе 5 с помощью скриншотов.
