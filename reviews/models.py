@@ -5,6 +5,22 @@ from catalog.models import Product
 
 
 class Review(models.Model):
+    """
+    Модель отзыва на товар.
+
+    Содержит оценку и текстовый отзыв пользователя на конкретный товар.
+    Каждый пользователь может оставить только один отзыв на товар.
+
+    Атрибуты:
+        product (ForeignKey): Товар, к которому относится отзыв.
+        user (ForeignKey): Пользователь, оставивший отзыв.
+        rating (IntegerField): Оценка от 1 до 5 звезд.
+        text (TextField): Текстовый отзыв (необязательный).
+        created_at (DateTimeField): Дата и время создания отзыва.
+
+    Методы:
+        __str__(): Возвращает строковое представление отзыва.
+    """
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -37,4 +53,10 @@ class Review(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
+        """
+        Возвращает строковое представление отзыва.
+
+        Returns:
+            str: "<Пользователь> - <Товар> (<Рейтинг>⭐)".
+        """
         return f'{self.user} - {self.product} ({self.rating}⭐)'

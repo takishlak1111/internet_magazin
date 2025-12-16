@@ -4,6 +4,32 @@ from django.utils import timezone
 
 
 class Order(models.Model):
+    """
+    Модель заказа.
+
+    Содержит информацию о заказе, клиенте, способе оплаты и статусе.
+
+    Атрибуты:
+        STATUSES (list): Доступные статусы заказа.
+        PAYMENT_TYPES (list): Доступные способы оплаты.
+        user (ForeignKey): Пользователь, оформивший заказ.
+        cart (ForeignKey): Корзина, из которой создан заказ.
+        number (CharField): Уникальный номер заказа (генерируется автоматически).
+        created (DateTimeField): Дата и время создания заказа.
+        status (CharField): Текущий статус заказа.
+        total (DecimalField): Общая сумма заказа.
+        full_name (CharField): Полное имя клиента.
+        email (EmailField): Email клиента.
+        phone (CharField): Телефон клиента.
+        address (TextField): Адрес доставки.
+        payment (CharField): Способ оплаты.
+        is_paid (BooleanField): Статус оплаты.
+        paid_date (DateTimeField): Дата оплаты.
+
+    Методы:
+        save(): Генерирует уникальный номер заказа при создании.
+        __str__(): Возвращает строковое представление заказа.
+    """
     STATUSES = [
         ('new', 'Новый'),
         ('confirmed', 'Подтвержден'),
@@ -51,9 +77,24 @@ class Order(models.Model):
         verbose_name_plural = 'заказы'
 
     def __str__(self):
+        """
+        Возвращает строковое представление заказа.
+
+        Returns:
+            str: "Заказ #<номер заказа>".
+        """
         return f'Заказ #{self.number}'
 
     def save(self, *args, **kwargs):
+        """
+        Сохраняет заказ, генерируя уникальный номер при создании.
+
+        Номер генерируется в формате: ORDER-YYMMDD-XXXX
+
+        Args:
+            *args: Аргументы для родительского метода save.
+            **kwargs: Ключевые аргументы для родительского метода save.
+        """
         if not self.number:
             date_str = timezone.now().strftime('%y%m%d')
             last = Order.objects.filter(number__startswith=f'ORDER-{date_str}').count()
@@ -62,6 +103,23 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    """
+    Модель товара в заказе.
+
+    Связывает товар с заказом, храня цену и количество на момент покупки.
+
+    Атрибуты:
+        order (ForeignKey): Заказ, к которому относится товар.
+        product (ForeignKey): Товар из каталога.
+        price (DecimalField): Цена товара на момент покупки.
+        quantity (PositiveIntegerField): Количество товара.
+
+    Свойства:
+        sum: Возвращает общую стоимость позиции.
+
+    Методы:
+        __str__(): Возвращает строковое представление позиции.
+    """
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
@@ -79,8 +137,20 @@ class OrderItem(models.Model):
         verbose_name_plural = 'товары в заказе'
 
     def __str__(self):
+        """
+        Возвращает строковое представление позиции заказа.
+
+        Returns:
+            str: "<Название товара> x <количество>".
+        """
         return f'{self.product.product_name} x {self.quantity}'
 
     @property
     def sum(self):
+        """
+        Рассчитывает общую стоимость позиции.
+
+        Returns:
+            Decimal: Цена умноженная на количество.
+        """
         return self.price * self.quantity

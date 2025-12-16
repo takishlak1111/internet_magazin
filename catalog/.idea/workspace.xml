@@ -8,10 +8,8 @@
       <change beforePath="$PROJECT_DIR$/../.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../config/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/../config/.idea/.name" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../orders/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/../orders/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +31,10 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python tests.Python tests in tests.py.executor": "Run",
+    "Python tests.pytest for tests.TestCategoryModel.test_category_absolute_url.executor": "Run",
     "Python tests.pytest in tests.py.executor": "Run",
+    "Python.admin.executor": "Run",
+    "Python.apps.executor": "Run",
     "Python.forms.executor": "Run",
     "Python.models.executor": "Run",
     "Python.settings.executor": "Run",
@@ -46,6 +47,30 @@
     "settings.editor.selected.configurable": "preferences.editor.code.editing"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="pytest for tests.TestCategoryModel.test_category_absolute_url" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="catalog" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.TestCategoryModel.test_category_absolute_url&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.pytest for tests.TestCategoryModel.test_category_absolute_url" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

@@ -9,6 +9,25 @@ from .forms import OrderForm
 
 @login_required
 def create_order(request):
+    """
+    Создает заказ из корзины пользователя.
+
+    Проверяет:
+        - Наличие товаров в корзине.
+        - Достаточность товаров на складе.
+
+    В случае успеха:
+        - Создает заказ.
+        - Создает позиции заказа.
+        - Уменьшает остатки на складе.
+        - Очищает корзину.
+
+    Args:
+        request (HttpRequest): Объект запроса.
+
+    Returns:
+        HttpResponse: Страница создания заказа или редирект.
+    """
     cart = get_object_or_404(Cart, user=request.user)
     items = cart.items.all()
 
@@ -73,11 +92,33 @@ def create_order(request):
 
 @login_required
 def order_list(request):
+    """
+    Отображает список заказов текущего пользователя.
+
+    Args:
+        request (HttpRequest): Объект запроса.
+
+    Returns:
+        HttpResponse: Страница со списком заказов.
+    """
     orders = Order.objects.filter(user=request.user).prefetch_related('items')
     return render(request, 'orders/list.html', {'orders': orders})
 
 
 @login_required
 def order_detail(request, order_id):
+    """
+    Отображает детальную информацию о заказе.
+
+    Примечание: В текущей реализации происходит редирект на список товаров.
+    Нужно доработать для отображения деталей заказа.
+
+    Args:
+        request (HttpRequest): Объект запроса.
+        order_id (int): ID заказа.
+
+    Returns:
+        HttpResponseRedirect: Редирект на список товаров.
+    """
     order = get_object_or_404(Order, id=order_id, user=request.user)
-    return redirect('catalog:product_list')
+    return render(request, 'orders/detail.html', {'order': order})
