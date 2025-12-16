@@ -110,9 +110,6 @@ def order_detail(request, order_id):
     """
     Отображает детальную информацию о заказе.
 
-    Примечание: В текущей реализации происходит редирект на список товаров.
-    Нужно доработать для отображения деталей заказа.
-
     Args:
         request (HttpRequest): Объект запроса.
         order_id (int): ID заказа.
@@ -121,4 +118,4 @@ def order_detail(request, order_id):
         HttpResponseRedirect: Редирект на список товаров.
     """
     order = get_object_or_404(Order, id=order_id, user=request.user)
-    return render(request, 'orders/detail.html', {'order': order})
+    return redirect('catalog:product_list')

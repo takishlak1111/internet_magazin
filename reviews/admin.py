@@ -4,10 +4,9 @@ from .models import Review
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ['id', 'product', 'user', 'rating', 'created_at']
+    list_display = ['id', 'product', 'user', 'rating', 'created_at'] # таблица с столбцами
     list_filter = ['rating', 'created_at', 'product']
-    search_fields = ['text', 'user__username', 'product__name']
-    readonly_fields = ['created_at']
+    readonly_fields = ['created_at'] # только читать
     list_per_page = 20
 
     fieldsets = (

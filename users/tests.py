@@ -3,13 +3,13 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 import os
+from .models import User
 
-# Добавьте настройку Django для корректной работы
 import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-User = get_user_model()
+User =get_user_model()
 
 class UserModelTest(TestCase):
     """Тесты для модели пользователя"""
@@ -65,14 +65,7 @@ class UserFormsTest(TestCase):
         }
         form = UserLoginForm(data=form_data)
         
-        # Отладочный вывод
-        if not form.is_valid():
-            print(f"Login form errors: {form.errors}")
-        
-        # Вместо проверки is_valid(), можно проверить базовую валидацию формы
-        # Форма логина обычно требует проверки существования пользователя
-        # В тестах мы проверяем только структуру формы
-        form = UserLoginForm()
+
         self.assertIn('username', form.fields)
         self.assertIn('password', form.fields)
     
@@ -91,7 +84,7 @@ class UserFormsTest(TestCase):
         """Тест валидной формы регистрации"""
         from users.forms import UserRegistrationForm
         
-        # Используйте надежный пароль
+
         form_data = {
             'username': 'newuser123',
             'email': 'new123@example.com',
@@ -189,7 +182,6 @@ class UserViewsTest(TestCase):
         """Тест GET запроса к странице регистрации"""
         response = self.client.get(reverse('users:registration'))
         self.assertEqual(response.status_code, 200)
-        # self.assertTemplateUsed(response, 'users/registration.html')
         self.assertContains(response, 'form')  # Проверяем наличие формы
     
     def test_registration_view_post_valid(self):

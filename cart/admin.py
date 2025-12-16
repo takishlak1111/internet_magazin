@@ -18,7 +18,6 @@ class CartAdmin(admin.ModelAdmin):
     """
     list_display = ['id', 'user', 'session', 'item_count', 'total']
     list_filter = ['user']
-    search_fields = ['user__username', 'session']
 
     def item_count(self, obj):
         """
@@ -32,7 +31,7 @@ class CartAdmin(admin.ModelAdmin):
         """
         return obj.items.count()
 
-    item_count.short_description = 'Товаров'
+    item_count.short_description = 'Товаров' # просто назыание в админке
 
     def total(self, obj):
         """
@@ -64,7 +63,6 @@ class CartItemAdmin(admin.ModelAdmin):
     """
     list_display = ['product', 'cart', 'quantity', 'total']
     list_filter = ['cart__user']
-    search_fields = ['product__name', 'cart__user__username']
 
     def total(self, obj):
         """
@@ -78,4 +76,4 @@ class CartItemAdmin(admin.ModelAdmin):
         """
         return obj.total()
 
-    total.short_description = 'Сумма'
+    total.short_description = 'Сумма' # названия поля в бд
