@@ -19,11 +19,11 @@ def get_cart(request):
         Cart: Объект корзины.
     """
     if request.user.is_authenticated:
-        cart, _ = Cart.objects.get_or_create(user=request.user)
+        cart, _ = Cart.objects.get_or_create(user=request.user) # гет он креате может создать новую корзину если нету (возвращает кортеж и 2 объектов, второй это просто будево создан не создан) 
     else:
         session_key = request.session.session_key
         if not session_key:
-            request.session.create()
+            request.session.create() # если нету ключа сесси то создаем
             session_key = request.session.session_key
         cart, _ = Cart.objects.get_or_create(session=session_key)
     return cart
@@ -57,18 +57,18 @@ def add(request, product_id):
             message = f"Недостаточно товара. Доступно: {product.stock} шт."
         else:
             item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-            if not created:
+            if not created: # проверка на был ли товар в корзине
                 item.quantity += quantity
             else:
                 item.quantity = quantity
             item.save()
 
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest': # проверяем в заголвке (request.headers) методом get(получаем) ajax ли это запрос
                 return JsonResponse({
                     'success': True,
                     'cart_count': cart.items.count(),
                     'total': float(cart.total()),
-                    'message': f'Товар "{product.product_name}" добавлен в корзину'
+                    'message': f'Товар "{product.product_name}" добавлен в корзину' # JS получает этот json обновляет счетчик корзины и показывает сообщение
                 })
 
             return redirect('catalog:product_detail', product_id=product_id)
@@ -82,7 +82,7 @@ def add(request, product_id):
         return redirect('catalog:product_detail', product_id=product_id)
 
     except Exception as e:
-        print(f"Ошибка при добавлении в корзину: {e}")
+        print(f"Ошибка при добавлении в корзину: {e}") #  в консоль сервера
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
                 'success': False,

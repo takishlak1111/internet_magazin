@@ -80,7 +80,7 @@ def profile(request):
     user = request.user
 
     cart, created = Cart.objects.get_or_create(user=user)
-
+# created - был ли взяты данные из бд или создались новые ( просто флаг как в асемблере)
     cart_items = CartItem.objects.filter(cart=cart)
     cart_total = cart.total() if cart_items.exists() else 0
 
@@ -93,7 +93,7 @@ def profile(request):
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    messages.error(request, f'{field}: {error}')
+                    messages.error(request, f'{field}: {error}') # request - чтобы понятно было системе какого пользователю отображать ошибку
     else:
         form = ProfileForm(instance=user)
 

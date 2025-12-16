@@ -23,7 +23,7 @@ class Review(models.Model):
     """
     product = models.ForeignKey(
         Product,
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE, # при удалении удаляются все отзывы
         related_name='reviews',
         verbose_name='Товар'
     )
@@ -50,7 +50,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
-        ordering = ['-created_at']
+        ordering = ['-created_at']  # сортировка по убыванию даты
 
     def __str__(self):
         """

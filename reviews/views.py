@@ -6,7 +6,7 @@ from .models import Review
 from .forms import ReviewForm
 
 
-@login_required
+@login_required # проверка на то, авторин ли польз
 def add_review(request, product_id):
     """
     Добавляет отзыв на товар.
@@ -25,7 +25,7 @@ def add_review(request, product_id):
     """
     product = get_object_or_404(Product, id=product_id)
 
-    existing_review = Review.objects.filter(product=product, user=request.user).first()
+    existing_review = Review.objects.filter(product=product, user=request.user).first() # проверка на вторичнсть отзыва
     if existing_review:
         messages.error(request, 'Вы уже оставили отзыв на этот товар')
         return redirect('catalog:product_detail', slug=product.slug)
@@ -33,8 +33,8 @@ def add_review(request, product_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            review = form.save(commit=False)
-            review.product = product
+            review = form.save(commit=False) # тут не сохраняем сразу тк не знаем сам продук и эзера из бд
+            review.product = product 
             review.user = request.user
             review.save()
             messages.success(request, 'Отзыв добавлен!')
