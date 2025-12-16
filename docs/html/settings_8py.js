@@ -1,0 +1,28 @@
+var settings_8py =
+[
+    [ "config.settings.ALLOWED_HOSTS", "namespaceconfig_1_1settings.html#ae2e0a2b81c7f21e3d414fa07566bc602", null ],
+    [ "config.settings.AUTH_PASSWORD_VALIDATORS", "namespaceconfig_1_1settings.html#af503ff70db6b40b11f94bf1f8c2e33b4", null ],
+    [ "config.settings.AUTH_USER_MODEL", "namespaceconfig_1_1settings.html#a6b2cec9325e0faedc3320de947be4a00", null ],
+    [ "config.settings.BASE_DIR", "namespaceconfig_1_1settings.html#ac47a2a9eab41b0ee83d6fa8ced7411ac", null ],
+    [ "config.settings.DATABASES", "namespaceconfig_1_1settings.html#a261e500830ac0f9cc6b519f5b83cfafc", null ],
+    [ "config.settings.DEBUG", "namespaceconfig_1_1settings.html#aa67b403f97800e7a46ff2058b90208e6", null ],
+    [ "config.settings.DEFAULT_AUTO_FIELD", "namespaceconfig_1_1settings.html#aab53328e6420cb55446ccdbd8ed08ce9", null ],
+    [ "config.settings.INSTALLED_APPS", "namespaceconfig_1_1settings.html#a5547d3c5b7de18e95281b1f4126d81c1", null ],
+    [ "config.settings.LANGUAGE_CODE", "namespaceconfig_1_1settings.html#a1c39c43a24917fe6bcc242f139b87a12", null ],
+    [ "config.settings.LOGIN_REDIRECT_URL", "namespaceconfig_1_1settings.html#adc3c180117489eb2ca70f31de7b54e8a", null ],
+    [ "config.settings.LOGIN_URL", "namespaceconfig_1_1settings.html#a10a48f3fc4fd7e77316080c247230274", null ],
+    [ "config.settings.LOGOUT_REDIRECT_URL", "namespaceconfig_1_1settings.html#abc14caf0e3bb201eee3b2ac1d7dcf3f2", null ],
+    [ "config.settings.MEDIA_ROOT", "namespaceconfig_1_1settings.html#a5f0bf8c6c4aa76df71e493f21192612e", null ],
+    [ "config.settings.MEDIA_URL", "namespaceconfig_1_1settings.html#a0be23a5d33e7b90427dd18ada82edf91", null ],
+    [ "config.settings.MIDDLEWARE", "namespaceconfig_1_1settings.html#ae8c2c7f239c50acfb09fd5b4627502dd", null ],
+    [ "config.settings.ROOT_URLCONF", "namespaceconfig_1_1settings.html#a0958adfe34e53c8d2f791a04da61657b", null ],
+    [ "config.settings.SECRET_KEY", "namespaceconfig_1_1settings.html#a2dd9ac737feabf2ade5cafd8031b9ced", null ],
+    [ "config.settings.STATIC_ROOT", "namespaceconfig_1_1settings.html#a138213ad7ba5c17aae75417622690fa0", null ],
+    [ "config.settings.STATIC_URL", "namespaceconfig_1_1settings.html#a5b05615bce16b0415bbe4d3dd59a8f0b", null ],
+    [ "config.settings.STATICFILES_DIRS", "namespaceconfig_1_1settings.html#a96b47550c896073bea188edf7248952d", null ],
+    [ "config.settings.TEMPLATES", "namespaceconfig_1_1settings.html#ae31a66265882af6ad36c6d6cd4740e8b", null ],
+    [ "config.settings.TIME_ZONE", "namespaceconfig_1_1settings.html#a8968f3b28d77af829343ea2d3621a49d", null ],
+    [ "config.settings.USE_I18N", "namespaceconfig_1_1settings.html#a7e53571f5b011e85da819b7afc9815c9", null ],
+    [ "config.settings.USE_TZ", "namespaceconfig_1_1settings.html#abdedfd8fbaacd872db8ece0ca34db328", null ],
+    [ "config.settings.WSGI_APPLICATION", "namespaceconfig_1_1settings.html#a71efdc33c0d1e002341366dad1479a83", null ]
+];

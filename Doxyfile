@@ -1,0 +1,28 @@
+# Основные настройки:
+PROJECT_NAME = "config"
+PROJECT_BRIEF = "Проект МИЭМ ВШЭ по созданию интернает магазина на python, испоьзуя python"
+OUTPUT_DIRECTORY = ./docs
+CREATE_SUBDIRS = NO
+OUTPUT_LANGUAGE = Russian
+
+GENERATE_HTML = YES
+GENERATE_LATEX = NO
+HTML_OUTPUT = html
+
+INPUT = cart \
+    catalog \ 
+    config\
+    orders \
+    reviews \
+    users \
+    manage.py
+INPUT_ENCODING = UTF-8
+RECURSIVE = YES
+EXTRACT_ALL = YES
+EXTRACT_PRIVATE = YES
+EXTRACT_STATIC = YES
+
+
+HAVE_DOT = YES
+CALL_GRAPH = YES
+CALLER_GRAPH = YES

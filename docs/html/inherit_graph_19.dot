@@ -1,0 +1,33 @@
+digraph "Иерархия классов. Графический вид."
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node0 [id="Node000000",label="TestCase",height=0.2,width=0.4,color="grey60", fillcolor="#E0E0E0", style="filled",tooltip=" "];
+  Node0 -> Node1 [id="edge36_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="cart.tests.CartBasicTests",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcart_1_1tests_1_1_cart_basic_tests.html",tooltip=" "];
+  Node0 -> Node2 [id="edge37_Node000000_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="catalog.tests.TestBrandModel",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcatalog_1_1tests_1_1_test_brand_model.html",tooltip=" "];
+  Node0 -> Node3 [id="edge38_Node000000_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="catalog.tests.TestCategory\lModel",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcatalog_1_1tests_1_1_test_category_model.html",tooltip=" "];
+  Node0 -> Node4 [id="edge39_Node000000_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="catalog.tests.TestFieldValidators",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcatalog_1_1tests_1_1_test_field_validators.html",tooltip=" "];
+  Node0 -> Node5 [id="edge40_Node000000_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="catalog.tests.TestModels\lIntegration",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcatalog_1_1tests_1_1_test_models_integration.html",tooltip=" "];
+  Node0 -> Node6 [id="edge41_Node000000_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="catalog.tests.TestProduct\lModel",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classcatalog_1_1tests_1_1_test_product_model.html",tooltip=" "];
+  Node0 -> Node7 [id="edge42_Node000000_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="orders.tests.OrderItemModelTest",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classorders_1_1tests_1_1_order_item_model_test.html",tooltip=" "];
+  Node0 -> Node8 [id="edge43_Node000000_Node000008",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node8 [id="Node000008",label="orders.tests.OrderModelTest",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classorders_1_1tests_1_1_order_model_test.html",tooltip=" "];
+  Node0 -> Node9 [id="edge44_Node000000_Node000009",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node9 [id="Node000009",label="users.tests.UserFormsTest",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classusers_1_1tests_1_1_user_forms_test.html",tooltip=" "];
+  Node0 -> Node10 [id="edge45_Node000000_Node000010",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node10 [id="Node000010",label="users.tests.UserModelTest",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classusers_1_1tests_1_1_user_model_test.html",tooltip=" "];
+  Node0 -> Node11 [id="edge46_Node000000_Node000011",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node11 [id="Node000011",label="users.tests.UserUrlsTest",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classusers_1_1tests_1_1_user_urls_test.html",tooltip=" "];
+  Node0 -> Node12 [id="edge47_Node000000_Node000012",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node12 [id="Node000012",label="users.tests.UserViewsTest",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classusers_1_1tests_1_1_user_views_test.html",tooltip=" "];
+}
