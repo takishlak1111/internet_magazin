@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['rating_0',['rating',['../classcatalog_1_1models_1_1_product.html#a4ec942bcef0c780f7f5f11c337f29572',1,'catalog.models.Product.rating'],['../classreviews_1_1models_1_1_review.html#ada5dc3dd35cc58fc0c49efcf92e63050',1,'reviews.models.Review.rating']]],
+  ['readonly_5ffields_1',['readonly_fields',['../classcatalog_1_1admin_1_1_product_admin.html#a64403f28a5c0a0cf7f1357b211dcd2cd',1,'catalog.admin.ProductAdmin.readonly_fields'],['../classorders_1_1admin_1_1_order_item_inline.html#a6f2b44eaf96bb08359104d4108117107',1,'orders.admin.OrderItemInline.readonly_fields'],['../classorders_1_1admin_1_1_order_admin.html#aad270cada07ddad4072e7e82d01d4a0a',1,'orders.admin.OrderAdmin.readonly_fields'],['../classreviews_1_1admin_1_1_review_admin.html#a928d5eeb808a97291382bbc361304a75',1,'reviews.admin.ReviewAdmin.readonly_fields']]],
+  ['registration_2',['registration',['../namespaceusers_1_1views.html#a6ea170b1b9a6862e9c9aff16769e35d3',1,'users::views']]],
+  ['remove_3',['remove',['../namespacecart_1_1views.html#a8bea57b7e628c574505fe74cf7af000f',1,'cart::views']]],
+  ['required_4',['required',['../classusers_1_1forms_1_1_user_registration_form.html#a3e2fc42b479a18f9f4e1fa1d669f4169',1,'users::forms::UserRegistrationForm']]],
+  ['review_5',['Review',['../classreviews_1_1models_1_1_review.html',1,'reviews::models']]],
+  ['reviewadmin_6',['ReviewAdmin',['../classreviews_1_1admin_1_1_review_admin.html',1,'reviews::admin']]],
+  ['reviewform_7',['ReviewForm',['../classreviews_1_1forms_1_1_review_form.html',1,'reviews::forms']]],
+  ['reviews_8',['reviews',['../namespacereviews.html',1,'']]],
+  ['reviews_3a_3aadmin_9',['admin',['../namespacereviews_1_1admin.html',1,'reviews']]],
+  ['reviews_3a_3aapps_10',['apps',['../namespacereviews_1_1apps.html',1,'reviews']]],
+  ['reviews_3a_3aforms_11',['forms',['../namespacereviews_1_1forms.html',1,'reviews']]],
+  ['reviews_3a_3amigrations_12',['migrations',['../namespacereviews_1_1migrations.html',1,'reviews']]],
+  ['reviews_3a_3amigrations_3a_3a0001_5finitial_13',['0001_initial',['../namespacereviews_1_1migrations_1_10001__initial.html',1,'reviews::migrations']]],
+  ['reviews_3a_3amigrations_3a_3a0002_5finitial_14',['0002_initial',['../namespacereviews_1_1migrations_1_10002__initial.html',1,'reviews::migrations']]],
+  ['reviews_3a_3amodels_15',['models',['../namespacereviews_1_1models.html',1,'reviews']]],
+  ['reviews_3a_3atests_16',['tests',['../namespacereviews_1_1tests.html',1,'reviews']]],
+  ['reviews_3a_3aurls_17',['urls',['../namespacereviews_1_1urls.html',1,'reviews']]],
+  ['reviews_3a_3aviews_18',['views',['../namespacereviews_1_1views.html',1,'reviews']]],
+  ['reviews_5fcount_19',['reviews_count',['../classcatalog_1_1models_1_1_product.html#a4c886bca666fd7eb04d1b5e9b501c498',1,'catalog::models::Product']]],
+  ['reviewsconfig_20',['ReviewsConfig',['../classreviews_1_1apps_1_1_reviews_config.html',1,'reviews::apps']]],
+  ['root_5furlconf_21',['ROOT_URLCONF',['../namespaceconfig_1_1settings.html#a0958adfe34e53c8d2f791a04da61657b',1,'config::settings']]]
+];

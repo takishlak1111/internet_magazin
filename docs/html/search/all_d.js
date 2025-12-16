@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['operations_0',['operations',['../classcart_1_1migrations_1_10001__initial_1_1_migration.html#aecaa7428eb22558fe89064834723a499',1,'cart.migrations.0001_initial.Migration.operations'],['../classcart_1_1migrations_1_10002__initial_1_1_migration.html#a49df9f5967fedb3d902809bb8c2d36bc',1,'cart.migrations.0002_initial.Migration.operations'],['../classcatalog_1_1migrations_1_10001__initial_1_1_migration.html#a2e0a24279947639b7206ed28504f1789',1,'catalog.migrations.0001_initial.Migration.operations'],['../classorders_1_1migrations_1_10001__initial_1_1_migration.html#a91550fc221a3793ab23f5cdfebf6dfb7',1,'orders.migrations.0001_initial.Migration.operations'],['../classorders_1_1migrations_1_10002__initial_1_1_migration.html#a870a00e03c4635bfbaaf2fa4c3e11b45',1,'orders.migrations.0002_initial.Migration.operations'],['../classreviews_1_1migrations_1_10001__initial_1_1_migration.html#ae6bd411b09f41414fda7f222981a2530',1,'reviews.migrations.0001_initial.Migration.operations'],['../classreviews_1_1migrations_1_10002__initial_1_1_migration.html#a38af2740ae4f479892b7bdecf0a19e57',1,'reviews.migrations.0002_initial.Migration.operations'],['../classusers_1_1migrations_1_10001__initial_1_1_migration.html#a99b0436795084713bb3ff844f00048fb',1,'users.migrations.0001_initial.Migration.operations']]],
+  ['order_1',['Order',['../classorders_1_1models_1_1_order.html',1,'orders::models']]],
+  ['order_2',['order',['../classorders_1_1models_1_1_order_item.html#a64a501505cf6ee25e198fd3e87d2f00f',1,'orders.models.OrderItem.order'],['../classorders_1_1tests_1_1_order_item_model_test.html#a0d3b75e506ea222afde68da68dfae8dd',1,'orders.tests.OrderItemModelTest.order']]],
+  ['order_5fdetail_3',['order_detail',['../namespaceorders_1_1views.html#a0eaf7c262018d46b5b5c910456e41fb5',1,'orders::views']]],
+  ['order_5flist_4',['order_list',['../namespaceorders_1_1views.html#a499d37866cc872e5df6a32697f4e7da3',1,'orders::views']]],
+  ['orderadmin_5',['OrderAdmin',['../classorders_1_1admin_1_1_order_admin.html',1,'orders::admin']]],
+  ['orderform_6',['OrderForm',['../classorders_1_1forms_1_1_order_form.html',1,'orders::forms']]],
+  ['ordering_7',['ordering',['../classcatalog_1_1models_1_1_category_1_1_meta.html#ae875c9c5529106f8756e91064698867f',1,'catalog.models.Category.Meta.ordering'],['../classcatalog_1_1models_1_1_brand_1_1_meta.html#a7667a40f26f2c42956773406e71113f3',1,'catalog.models.Brand.Meta.ordering'],['../classcatalog_1_1models_1_1_product_1_1_meta.html#a8d009d4bcf031878055a8749a31bc0f4',1,'catalog.models.Product.Meta.ordering'],['../classorders_1_1models_1_1_order_1_1_meta.html#a08bddebf9da7cbd82c867add1a8f953f',1,'orders.models.Order.Meta.ordering'],['../classreviews_1_1models_1_1_review_1_1_meta.html#a71dcff1cd0ea80e9a8b738d815596d4a',1,'reviews.models.Review.Meta.ordering']]],
+  ['orderitem_8',['OrderItem',['../classorders_1_1models_1_1_order_item.html',1,'orders::models']]],
+  ['orderitemadmin_9',['OrderItemAdmin',['../classorders_1_1admin_1_1_order_item_admin.html',1,'orders::admin']]],
+  ['orderiteminline_10',['OrderItemInline',['../classorders_1_1admin_1_1_order_item_inline.html',1,'orders::admin']]],
+  ['orderitemmodeltest_11',['OrderItemModelTest',['../classorders_1_1tests_1_1_order_item_model_test.html',1,'orders::tests']]],
+  ['ordermodeltest_12',['OrderModelTest',['../classorders_1_1tests_1_1_order_model_test.html',1,'orders::tests']]],
+  ['orders_13',['orders',['../namespaceorders.html',1,'']]],
+  ['orders_3a_3aadmin_14',['admin',['../namespaceorders_1_1admin.html',1,'orders']]],
+  ['orders_3a_3aapps_15',['apps',['../namespaceorders_1_1apps.html',1,'orders']]],
+  ['orders_3a_3aforms_16',['forms',['../namespaceorders_1_1forms.html',1,'orders']]],
+  ['orders_3a_3amigrations_17',['migrations',['../namespaceorders_1_1migrations.html',1,'orders']]],
+  ['orders_3a_3amigrations_3a_3a0001_5finitial_18',['0001_initial',['../namespaceorders_1_1migrations_1_10001__initial.html',1,'orders::migrations']]],
+  ['orders_3a_3amigrations_3a_3a0002_5finitial_19',['0002_initial',['../namespaceorders_1_1migrations_1_10002__initial.html',1,'orders::migrations']]],
+  ['orders_3a_3amodels_20',['models',['../namespaceorders_1_1models.html',1,'orders']]],
+  ['orders_3a_3atests_21',['tests',['../namespaceorders_1_1tests.html',1,'orders']]],
+  ['orders_3a_3aurls_22',['urls',['../namespaceorders_1_1urls.html',1,'orders']]],
+  ['orders_3a_3aviews_23',['views',['../namespaceorders_1_1views.html',1,'orders']]],
+  ['ordersconfig_24',['OrdersConfig',['../classorders_1_1apps_1_1_orders_config.html',1,'orders::apps']]]
+];

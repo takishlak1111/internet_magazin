@@ -2,10 +2,6 @@ import pytest
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.core.files.uploadedfile import SimpleUploadedFile
-from PIL import Image
-import io
-import sys
 import os
 
 # Добавьте настройку Django для корректной работы
@@ -170,8 +166,6 @@ class UserViewsTest(TestCase):
         """Тест GET запроса к странице входа"""
         response = self.client.get(reverse('users:login'))
         self.assertEqual(response.status_code, 200)
-        # Используйте правильный шаблон из вашего проекта
-        # self.assertTemplateUsed(response, 'users/login.html')
         self.assertContains(response, 'form')  # Проверяем наличие формы
     
     def test_login_view_post_valid(self):
