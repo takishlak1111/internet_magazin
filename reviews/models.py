@@ -23,7 +23,7 @@ class Review(models.Model):
     """
     product = models.ForeignKey(
         Product,
-        on_delete=models.CASCADE, # при удалении удаляются все отзывы
+        on_delete=models.CASCADE,  # при удалении удаляются все отзывы
         related_name='reviews',
         verbose_name='Товар'
     )

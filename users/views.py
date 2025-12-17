@@ -23,7 +23,8 @@ def login(request):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            user = authenticate(username=username, password=password) # проверка есть ли пользователь в бд
+            # проверка есть ли пользователь в бд
+            user = authenticate(username=username, password=password)
             if user:
                 auth_login(request, user)
                 return HttpResponseRedirect(reverse('catalog:product_list'))
@@ -51,7 +52,7 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
-            user = form.instance # получаем данные из формы чтобы в логине использоват
+            user = form.instance  # получаем данные из формы чтобы в логине использоват
             auth_login(request, user)
             return HttpResponseRedirect(reverse('catalog:product_list'))
     else:
@@ -64,7 +65,7 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
-@login_required # декоратор на провреку аутендиф
+@login_required  # декоратор на провреку аутендиф
 def profile(request):
     """
     Отображает и обрабатывает редактирование профиля пользователя.
@@ -80,7 +81,8 @@ def profile(request):
     user = request.user
 
     cart, created = Cart.objects.get_or_create(user=user)
-# created - был ли взяты данные из бд или создались новые ( просто флаг как в асемблере)
+# created - был ли взяты данные из бд или создались новые ( просто флаг
+# как в асемблере)
     cart_items = CartItem.objects.filter(cart=cart)
     cart_total = cart.total() if cart_items.exists() else 0
 
@@ -93,7 +95,9 @@ def profile(request):
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    messages.error(request, f'{field}: {error}') # request - чтобы понятно было системе какого пользователю отображать ошибку
+                    # request - чтобы понятно было системе какого пользователю
+                    # отображать ошибку
+                    messages.error(request, f'{field}: {error}')
     else:
         form = ProfileForm(instance=user)
 

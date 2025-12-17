@@ -21,9 +21,11 @@ class TestCategoryModel(TestCase):
 
     def test_category_absolute_url(self):
         try:
-            expected_url = reverse('catalog:category_detail', kwargs={'slug': 'electronics'})
+            expected_url = reverse(
+                'catalog:category_detail', kwargs={
+                    'slug': 'electronics'})
             self.assertEqual(self.category.get_absolute_url(), expected_url)
-        except:
+        except BaseException:
             self.assertTrue(hasattr(self.category, 'get_absolute_url'))
 
     def test_category_meta_options(self):
@@ -60,7 +62,7 @@ class TestBrandModel(TestCase):
         try:
             expected_url = reverse('brand_detail', kwargs={'slug': 'apple'})
             self.assertEqual(self.brand.get_absolute_url(), expected_url)
-        except:
+        except BaseException:
             self.assertTrue(hasattr(self.brand, 'get_absolute_url'))
 
     def test_brand_meta_options(self):
@@ -165,9 +167,11 @@ class TestProductModel(TestCase):
 
     def test_product_absolute_url(self):
         try:
-            expected_url = reverse('product_detail', kwargs={'slug': 'iphone-13'})
+            expected_url = reverse(
+                'product_detail', kwargs={
+                    'slug': 'iphone-13'})
             self.assertEqual(self.product.get_absolute_url(), expected_url)
-        except:
+        except BaseException:
             self.assertTrue(hasattr(self.product, 'get_absolute_url'))
 
     def test_product_meta_options(self):
@@ -232,6 +236,7 @@ class TestProductModel(TestCase):
         )
         self.assertEqual(product.product_name, "Безымянный товар")
         self.assertIsNone(product.brand)
+
 
 class TestModelsIntegration(TestCase):
 
@@ -443,7 +448,7 @@ class TestPytestModels:
             stock=5
         )
 
-        assert product.in_stock == True
+        assert product.in_stock
 
     def test_brand_product_count_pytest(self):
         category = Category.objects.create(name="Категория", slug="category")

@@ -16,7 +16,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrderItem',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('price', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('quantity', models.PositiveIntegerField(default=1)),
             ],
@@ -28,19 +29,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Order',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', models.CharField(editable=False, max_length=20, unique=True)),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('number', models.CharField(
+                    editable=False, max_length=20, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('status', models.CharField(choices=[('new', 'Новый'), ('confirmed', 'Подтвержден'), ('sent', 'Отправлен'), ('done', 'Выполнен'), ('canceled', 'Отменен')], default='new', max_length=20)),
-                ('total', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
+                ('status', models.CharField(choices=[('new', 'Новый'), ('confirmed', 'Подтвержден'), (
+                    'sent', 'Отправлен'), ('done', 'Выполнен'), ('canceled', 'Отменен')], default='new', max_length=20)),
+                ('total', models.DecimalField(
+                    decimal_places=2, default=0, max_digits=10)),
                 ('full_name', models.CharField(max_length=100)),
                 ('email', models.EmailField(max_length=254)),
                 ('phone', models.CharField(max_length=20)),
                 ('address', models.TextField()),
-                ('payment', models.CharField(choices=[('cash', 'Наличные'), ('card', 'Карта'), ('online', 'Онлайн')], default='cash', max_length=20)),
+                ('payment', models.CharField(choices=[
+                 ('cash', 'Наличные'), ('card', 'Карта'), ('online', 'Онлайн')], default='cash', max_length=20)),
                 ('is_paid', models.BooleanField(default=False)),
                 ('paid_date', models.DateTimeField(blank=True, null=True)),
-                ('cart', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='cart.cart')),
+                ('cart', models.ForeignKey(blank=True, null=True,
+                 on_delete=django.db.models.deletion.SET_NULL, to='cart.cart')),
             ],
             options={
                 'verbose_name': 'заказ',

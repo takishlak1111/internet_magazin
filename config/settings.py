@@ -71,7 +71,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'magaz',
         'USER': 'mpv',
-        'PASSWORD':'mixail2007',
+        'PASSWORD': 'mixail2007',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -110,7 +110,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-AUTH_USER_MODEL='users.User'
+AUTH_USER_MODEL = 'users.User'
 
 try:
     from .local_settings import *

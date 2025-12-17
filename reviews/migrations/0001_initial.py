@@ -17,11 +17,33 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Review',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rating', models.IntegerField(default=5, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)], verbose_name='Рейтинг')),
-                ('text', models.TextField(blank=True, verbose_name='Текст отзыва')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='catalog.product', verbose_name='Товар')),
+                ('id',
+                 models.BigAutoField(
+                     auto_created=True,
+                     primary_key=True,
+                     serialize=False,
+                     verbose_name='ID')),
+                ('rating',
+                 models.IntegerField(
+                     default=5,
+                     validators=[
+                         django.core.validators.MinValueValidator(1),
+                         django.core.validators.MaxValueValidator(5)],
+                     verbose_name='Рейтинг')),
+                ('text',
+                 models.TextField(
+                     blank=True,
+                     verbose_name='Текст отзыва')),
+                ('created_at',
+                 models.DateTimeField(
+                     auto_now_add=True,
+                     verbose_name='Дата создания')),
+                ('product',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.CASCADE,
+                     related_name='reviews',
+                     to='catalog.product',
+                     verbose_name='Товар')),
             ],
             options={
                 'verbose_name': 'Отзыв',

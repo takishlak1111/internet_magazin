@@ -50,9 +50,20 @@ class ProductAdmin(admin.ModelAdmin):
     Методы:
         get_brand(): Возвращает название бренда или 'Без бренда'.
     """
-    list_display = ('product_name', 'category', 'get_brand', 'price', 'stock', 'created_at')
+    list_display = (
+        'product_name',
+        'category',
+        'get_brand',
+        'price',
+        'stock',
+        'created_at')
     list_filter = ('category', 'brand', 'created_at', 'price')
-    search_fields = ('product_name', 'description', 'slug', 'category__name', 'brand__name')
+    search_fields = (
+        'product_name',
+        'description',
+        'slug',
+        'category__name',
+        'brand__name')
     prepopulated_fields = {'slug': ('product_name',)}
     list_editable = ('price', 'stock')
     readonly_fields = ('created_at', 'updated_at')

@@ -15,11 +15,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Brand',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100, verbose_name='Название')),
-                ('slug', models.SlugField(max_length=100, unique=True, verbose_name='URL')),
-                ('description', models.TextField(blank=True, verbose_name='Описание')),
-                ('logo', models.ImageField(blank=True, null=True, upload_to='brands/', verbose_name='Логотип')),
+                ('slug', models.SlugField(max_length=100,
+                 unique=True, verbose_name='URL')),
+                ('description', models.TextField(
+                    blank=True, verbose_name='Описание')),
+                ('logo', models.ImageField(blank=True, null=True,
+                 upload_to='brands/', verbose_name='Логотип')),
             ],
             options={
                 'verbose_name': 'Бренд',
@@ -30,9 +34,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='Навзание категории')),
-                ('slug', models.SlugField(max_length=100, unique=True, verbose_name='URL')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100,
+                 verbose_name='Навзание категории')),
+                ('slug', models.SlugField(max_length=100,
+                 unique=True, verbose_name='URL')),
             ],
             options={
                 'verbose_name': 'Категория',
@@ -43,17 +50,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product_name', models.CharField(max_length=100, verbose_name='Название продукта')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('product_name', models.CharField(
+                    max_length=100, verbose_name='Название продукта')),
                 ('description', models.TextField(verbose_name='Описание продукта')),
-                ('slug', models.SlugField(max_length=200, unique=True, verbose_name='URL')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Цена')),
-                ('rating', models.FloatField(default=0.0, verbose_name='Рейтинг товара')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления товара')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления товара')),
-                ('stock', models.IntegerField(default=0, verbose_name='Количество на складе')),
-                ('brand', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='products', to='catalog.brand', verbose_name='Бренд')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='catalog.category', verbose_name='Категория товаров')),
+                ('slug', models.SlugField(max_length=200,
+                 unique=True, verbose_name='URL')),
+                ('price', models.DecimalField(
+                    decimal_places=2, max_digits=10, verbose_name='Цена')),
+                ('rating', models.FloatField(
+                    default=0.0, verbose_name='Рейтинг товара')),
+                ('created_at', models.DateTimeField(
+                    auto_now_add=True, verbose_name='Дата добавления товара')),
+                ('updated_at', models.DateTimeField(
+                    auto_now=True, verbose_name='Дата обновления товара')),
+                ('stock', models.IntegerField(default=0,
+                 verbose_name='Количество на складе')),
+                ('brand', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                 related_name='products', to='catalog.brand', verbose_name='Бренд')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 to='catalog.category', verbose_name='Категория товаров')),
             ],
             options={
                 'verbose_name': 'Товар',

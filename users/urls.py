@@ -1,7 +1,7 @@
-from django.urls import path 
+from django.urls import path
 from users import views
 
-app_name = 'users' # для html для корневого url
+app_name = 'users'  # для html для корневого url
 
 urlpatterns = [
 
@@ -13,5 +13,5 @@ urlpatterns = [
 
     path('logout/', views.logout, name='logout'),
 
-    
+
 ]

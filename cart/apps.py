@@ -9,5 +9,5 @@ class CartConfig(AppConfig):
         default_auto_field (str): Тип поля для автоматического создания первичного ключа.
         name (str): Имя приложения.
     """
-    default_auto_field = 'django.db.models.BigAutoField' # поле для первичных ключей
+    default_auto_field = 'django.db.models.BigAutoField'  # поле для первичных ключей
     name = 'cart'
