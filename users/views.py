@@ -23,7 +23,7 @@ def login(request):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            user = authenticate(username=username, password=password)
+            user = authenticate(username=username, password=password) # проверка есть ли пользователь в бд
             if user:
                 auth_login(request, user)
                 return HttpResponseRedirect(reverse('catalog:product_list'))
@@ -51,7 +51,7 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
-            user = form.instance
+            user = form.instance # получаем данные из формы чтобы в логине использовать
             auth_login(request, user)
             return HttpResponseRedirect(reverse('catalog:product_list'))
     else:
@@ -64,7 +64,7 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
-@login_required
+@login_required # декоратор на провреку аутендиф
 def profile(request):
     """
     Отображает и обрабатывает редактирование профиля пользователя.

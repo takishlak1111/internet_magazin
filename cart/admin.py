@@ -48,7 +48,7 @@ class CartAdmin(admin.ModelAdmin):
     total.short_description = 'Сумма'
 
 
-@admin.register(CartItem)
+@admin.register(CartItem) # рег в админке класс без него не будет отображеия новых методов
 class CartItemAdmin(admin.ModelAdmin):
     """
     Админ-класс для модели CartItem.
