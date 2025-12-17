@@ -20,7 +20,11 @@ class Cart(models.Model):
         __str__(): Возвращает строковое представление корзины.
     """
     name = models.CharField(max_length=100, blank=True, verbose_name="корзина")
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
     session = models.CharField(max_length=100, null=True, blank=True)
 
     def total(self):
@@ -72,7 +76,10 @@ class CartItem(models.Model):
         total(): Возвращает стоимость позиции (цена * количество).
         __str__(): Возвращает строковое представление элемента.
     """
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+    cart = models.ForeignKey(
+        Cart,
+        on_delete=models.CASCADE,
+        related_name='items')  # related_name нужн для быстрого обращения
     product = models.ForeignKey('catalog.Product', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 

@@ -95,8 +95,14 @@ class CartBasicTests(TestCase):
         )
 
         # Добавляем два товара
-        CartItem.objects.create(cart=cart, product=self.product, quantity=2)  # 2 * 100 = 200
-        CartItem.objects.create(cart=cart, product=product2, quantity=3)  # 3 * 50 = 150
+        CartItem.objects.create(
+            cart=cart,
+            product=self.product,
+            quantity=2)  # 2 * 100 = 200
+        CartItem.objects.create(
+            cart=cart,
+            product=product2,
+            quantity=3)  # 3 * 50 = 150
 
         # Проверяем общую сумму
         self.assertEqual(cart.total(), 350.00)  # 200 + 150
@@ -123,7 +129,10 @@ def test_pytest_cart_workflow():
 
     # Создаем категорию и бренд
     category = Category.objects.create(name='Category', slug='category')
-    brand = Brand.objects.create(name='Brand', slug='brand', description='Brand')
+    brand = Brand.objects.create(
+        name='Brand',
+        slug='brand',
+        description='Brand')
 
     # Создаем товар
     product = Product.objects.create(

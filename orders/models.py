@@ -70,8 +70,15 @@ class Order(models.Model):
     phone = models.CharField(max_length=20)
     address = models.TextField()
 
+<<<<<<< HEAD
     payment = models.CharField(max_length=20,
                                choices=PAYMENT_TYPES, default='cash')
+=======
+    payment = models.CharField(
+        max_length=20,
+        choices=PAYMENT_TYPES,
+        default='cash')
+>>>>>>> 56dc7f2f7bb1f0e53bf08f436e83b2b3c04fd3e3
     is_paid = models.BooleanField(default=False)
     paid_date = models.DateTimeField(null=True, blank=True)
 
@@ -101,7 +108,8 @@ class Order(models.Model):
         """
         if not self.number:
             date_str = timezone.now().strftime('%y%m%d')
-            last = Order.objects.filter(number__startswith=f'ORDER-{date_str}').count()
+            last = Order.objects.filter(
+                number__startswith=f'ORDER-{date_str}').count()
             self.number = f'ORDER-{date_str}-{last + 1:04d}'
         super().save(*args, **kwargs)
 

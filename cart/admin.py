@@ -31,7 +31,7 @@ class CartAdmin(admin.ModelAdmin):
         """
         return obj.items.count()
 
-    item_count.short_description = 'Товаров' # просто назыание в админке
+    item_count.short_description = 'Товаров'  # просто назыание в админке
 
     def total(self, obj):
         """
@@ -48,6 +48,7 @@ class CartAdmin(admin.ModelAdmin):
     total.short_description = 'Сумма'
 
 
+# рег в админке класс без него не будет отображеия новых методов
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
     """
@@ -76,4 +77,4 @@ class CartItemAdmin(admin.ModelAdmin):
         """
         return obj.total()
 
-    total.short_description = 'Сумма' # названия поля в бд
+    total.short_description = 'Сумма'  # названия поля в бд

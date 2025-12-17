@@ -37,7 +37,9 @@ def create_order(request):
 
     for item in items:
         if item.quantity > item.product.stock:
-            messages.error(request, f'Недостаточно товара: {item.product.product_name}')
+            messages.error(
+                request, f'Недостаточно товара: {
+                    item.product.product_name}')
             return redirect('cart:detail')
 
     if request.method == 'POST':
@@ -72,7 +74,9 @@ def create_order(request):
     else:
         initial = {}
         if request.user.first_name and request.user.last_name:
-            initial['full_name'] = f'{request.user.first_name} {request.user.last_name}'
+            initial['full_name'] = f'{
+                request.user.first_name} {
+                request.user.last_name}'
         elif request.user.username:
             initial['full_name'] = request.user.username
 
