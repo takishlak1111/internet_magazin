@@ -41,8 +41,4 @@ class OrderForm(forms.ModelForm):
         if 'initial' not in kwargs and 'instance' not in kwargs:
             user = self.user if hasattr(self, 'user') else None
             if user and user.is_authenticated:
-<<<<<<< HEAD
                  self.fields['email'].initial = user.email
-=======
-                self.fields['email'].initial = user.email
->>>>>>> 56dc7f2f7bb1f0e53bf08f436e83b2b3c04fd3e3
