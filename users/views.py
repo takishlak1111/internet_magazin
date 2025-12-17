@@ -51,7 +51,7 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
-            user = form.instance # получаем данные из формы чтобы в логине использовать
+            user = form.instance # получаем данные из формы чтобы в логине использоват
             auth_login(request, user)
             return HttpResponseRedirect(reverse('catalog:product_list'))
     else:
