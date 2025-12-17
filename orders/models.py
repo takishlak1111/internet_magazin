@@ -56,18 +56,22 @@ class Order(models.Model):
         blank=True
     )
 
-    number = models.CharField(max_length=20, unique=True, editable=False)
+    number = models.CharField(max_length=20,
+                              unique=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20, choices=STATUSES, default='new')
+    status = models.CharField(max_length=20,
+                              choices=STATUSES, default='new')
 
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10,
+                                decimal_places=2, default=0)
 
     full_name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     address = models.TextField()
 
-    payment = models.CharField(max_length=20, choices=PAYMENT_TYPES, default='cash')
+    payment = models.CharField(max_length=20,
+                               choices=PAYMENT_TYPES, default='cash')
     is_paid = models.BooleanField(default=False)
     paid_date = models.DateTimeField(null=True, blank=True)
 

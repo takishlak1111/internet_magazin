@@ -21,7 +21,8 @@ class OrderForm(forms.ModelForm):
     """
     class Meta:
         model = Order
-        fields = ['full_name', 'email', 'phone', 'address', 'payment']
+        fields = ['full_name', 'email', 'phone',
+                  'address', 'payment']
         widgets = {
             'address': forms.Textarea(attrs={'rows': 3}),
         }
@@ -40,4 +41,4 @@ class OrderForm(forms.ModelForm):
         if 'initial' not in kwargs and 'instance' not in kwargs:
             user = self.user if hasattr(self, 'user') else None
             if user and user.is_authenticated:
-                self.fields['email'].initial = user.email
+                 self.fields['email'].initial = user.email

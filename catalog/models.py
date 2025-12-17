@@ -14,8 +14,10 @@ class Category(models.Model):
         get_absolute_url(): Возвращает абсолютный URL для детальной страницы категории.
         __str__(): Возвращает строковое представление (название категории).
     """
-    name = models.CharField(max_length=100, verbose_name="Название категории")
-    slug = models.SlugField(max_length=100, unique=True, verbose_name='URL')
+    name = models.CharField(max_length=100,
+                            verbose_name="Название категории")
+    slug = models.SlugField(max_length=100,
+                            unique=True, verbose_name='URL')
 
     def get_absolute_url(self):
         """
@@ -24,7 +26,8 @@ class Category(models.Model):
         Returns:
             str: URL вида '/category/<slug>/'.
         """
-        return reverse('catalog:category_detail', kwargs={'slug': self.slug})
+        return reverse('catalog:category_detail',
+                       kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Категория'
@@ -52,10 +55,15 @@ class Brand(models.Model):
         get_absolute_url(): Возвращает абсолютный URL для детальной страницы бренда.
         __str__(): Возвращает название бренда.
     """
-    name = models.CharField(max_length=100, verbose_name='Название')
-    slug = models.SlugField(max_length=100, unique=True, verbose_name='URL')
-    description = models.TextField(blank=True, verbose_name='Описание')
-    logo = models.ImageField(upload_to='brands/', blank=True, null=True, verbose_name='Логотип')
+    name = models.CharField(max_length=100,
+                            verbose_name='Название')
+    slug = models.SlugField(max_length=100,
+                            unique=True, verbose_name='URL')
+    description = models.TextField(blank=True,
+                                   verbose_name='Описание')
+    logo = models.ImageField(upload_to='brands/',
+                             blank=True, null=True,
+                             verbose_name='Логотип')
 
     class Meta:
         verbose_name = 'Бренд'
@@ -72,7 +80,8 @@ class Brand(models.Model):
         Returns:
             str: URL вида '/brand/<slug>/'.
         """
-        return reverse('brand_detail', kwargs={'slug': self.slug})
+        return reverse('brand_detail',
+                       kwargs={'slug': self.slug})
 
     @property
     def product_count(self):
@@ -110,17 +119,28 @@ class Product(models.Model):
         get_absolute_url(): Возвращает абсолютный URL детальной страницы товара.
         __str__(): Возвращает строку вида "<Бренд> <Название товара>".
     """
-    product_name = models.CharField(max_length=100, verbose_name="Название продукта")
+    product_name = models.CharField(max_length=100,
+                                    verbose_name="Название продукта")
     description = models.TextField(verbose_name="Описание продукта")
-    slug = models.SlugField(max_length=200, unique=True, verbose_name='URL')
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
-    rating = models.FloatField(default=0.0, verbose_name="Рейтинг товара")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления товара")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления товара")
-    stock = models.IntegerField(default=0, verbose_name="Количество на складе")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория товаров")
-    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, blank=True, null=True,
-                              related_name='products', verbose_name='Бренд')
+    slug = models.SlugField(max_length=200, unique=True,
+                            verbose_name='URL')
+    price = models.DecimalField(max_digits=10,
+                                decimal_places=2,
+                                verbose_name="Цена")
+    rating = models.FloatField(default=0.0,
+                               verbose_name="Рейтинг товара")
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name="Дата добавления товара")
+    updated_at = models.DateTimeField(auto_now=True,
+                                      verbose_name="Дата обновления товара")
+    stock = models.IntegerField(default=0,
+                                verbose_name="Количество на складе")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+                                 verbose_name="Категория товаров")
+    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL,
+                              blank=True, null=True,
+                              related_name='products',
+                              verbose_name='Бренд')
 
     class Meta:
         verbose_name = "Товар"
@@ -133,7 +153,7 @@ class Product(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.brand.name if self.brand else ''} {self.product_name}".strip()
+        return (f"{self.brand.name if self.brand else ''}{self.product_name}").strip()
 
     def get_absolute_url(self):
         """
@@ -142,7 +162,8 @@ class Product(models.Model):
         Returns:
             str: URL вида '/product/<slug>/'.
         """
-        return reverse('product_detail', kwargs={'slug': self.slug})
+        return reverse('product_detail',
+                       kwargs={'slug': self.slug})
 
     @property
     def in_stock(self):
